@@ -1,0 +1,19 @@
+Simple cloth mesh simulator using springs
+
+Makefile setup
+- Include Matrix4's makefile with
+	include Cloth/Cloth.mk
+- Add as a prerequisite for your executable target
+	$(CLOTH_MAIN_OBJ)
+- Add as a prerequisite for your clean target
+	ClothClean
+
+Sample driver setup:
+	copy the SampleDriver.cpp to where your makefile/project folder is
+		(probably one level higher than Cloth/)
+
+Noteworthy header files within Cloth:
+	src/DataStructures/ParticleBinding/ParticleBinding.hpp
+	src/DataStructures/Scene/Scene.hpp
+	src/Input/Input.hpp
+	src/Physics/Physics.hpp
