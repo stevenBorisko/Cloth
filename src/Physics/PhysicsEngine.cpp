@@ -1,7 +1,9 @@
 #include "Physics.hpp"
 #include "../DataStructures/Scene/Scene.hpp"
 
-void PhysicsEngine::updateScene(Scene* scene) {
+void PhysicsEngine::updateScene(Scene* scene, Scene* swap) {
+
+	scene->deepCopyInto(swap);
 
 	// reset the particles' forces
 	for(auto& particle : scene->particles)

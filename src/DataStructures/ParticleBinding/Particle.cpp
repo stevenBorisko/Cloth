@@ -67,45 +67,23 @@ Particle& Particle::operator=(const Particle& rhs) {
 // Displayable Functions //
 //----------------------------------------------------------------------------//
 
-void Particle::setup() {
-/*
-	this->shape.setRadius(this->radius);
-	this->shape.setPosition(
-		ofVec3f(
-			this->position.x,
-			this->position.y,
-			this->position.z
-		)
-	);
-
-	this->shapeMaterial.setDiffuseColor(ofFloatColor(0.1, 0.9, 0.1));
-	this->shapeMaterial.setSpecularColor(ofFloatColor(0.1, 0.1, 0.1));
-	this->shapeMaterial.setShininess(2.0);
-*/
+void Particle::setup() { }
+void Particle::update() { }
+void Particle::draw() {
+	// particle is a sphere
+	if(this->radius > 0.0) {
+		glColor3f(0,1,0);
+		glPushMatrix();
+		glTranslatef(this->position[0],this->position[1],this->position[2]);
+		glutWireSphere(this->radius,10,10);
+		glPopMatrix();
+	// particle is a point
+	} else {
+		glBegin(GL_POINTS);
+		glVertex3f(this->position[0],this->position[1],this->position[2]);
+		glEnd();
+	}
 }
-
-void Particle::update() {
-/*
-	this->shape.setPosition(
-		ofVec3f(
-			this->position.x,
-			this->position.y,
-			this->position.z
-		)
-	);
-	//this->shape.setRadius(this->radius);
-*/
-}
-
-/*
-void Particle::draw(ofEasyCam& cam) {
-	cam.begin();
-	this->shapeMaterial.begin();
-	this->shape.draw();
-	this->shapeMaterial.end();
-	cam.end();
-}
-*/
 
 //----------------------------------------------------------------------------//
 // Miscellaneous //

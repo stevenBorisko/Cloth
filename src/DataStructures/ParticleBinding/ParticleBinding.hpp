@@ -1,6 +1,16 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+#ifdef __APPLE__
+#include <GLUT/gl.h>
+#include <GLUT/glu.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+#endif
+
 #include <cstring>
 #include <vector>
 #include <iterator>
@@ -39,7 +49,7 @@ struct Particle: Displayable {
 	// Displayable Functions
 	void setup();
 	void update();
-	//void draw(ofEasyCam& cam);
+	void draw();
 
 	// Miscellaneous
 	void addBinding(Binding* binding);
@@ -85,7 +95,7 @@ struct Binding: Displayable {
 	// Displayable Functions
 	void setup();
 	void update();
-	//void draw(ofEasyCam& cam);
+	void draw();
 
 	// Miscellaneous
 	Vector4 getDisplacement() const;

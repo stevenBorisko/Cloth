@@ -23,13 +23,13 @@ PHYSICS_SUB_OBJS := \
 # --- Rules ---
 
 # Main object
-$(PHYSICS_MAIN_OBJ): $(PHYSICS_DEPS) $(PHYSICS_SUB_OBJS)
+$(PHYSICS_MAIN_OBJ): $(PHYSICS_SUB_OBJS)
 	@echo "- - - - Physics compiled - - - -"
 	$(LD) -r $(PHYSICS_LFLAGS) $(PHYSICS_SUB_OBJS) -o $@
 	@echo "- - - - Physics linked - - - -"
 
 # Sub objects
-$(PHYSICS_OBJDIR)%.o: $(PHYSICS_PATH)%.cpp
+$(PHYSICS_OBJDIR)%.o: $(PHYSICS_PATH)%.cpp $(PHYSICS_DEPS)
 	$(CC) -c $(PHYSICS_CFLAGS) $< -o $@
 
 # Clean

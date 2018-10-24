@@ -1,9 +1,17 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#define TIME_STEP (1.0f / 180.0f)
+#include <pthread.h>
+
+#define TIME_STEP (1.0f / 512.0f)
+#define THREAD_COUNT 4
 
 #include "../DataStructures/Scene/Scene.hpp"
+
+struct ThreadData {
+	Scene* scene;
+	unsigned int index;
+};
 
 //----------------------------------------------------------------------------//
 // Forces //

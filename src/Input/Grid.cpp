@@ -40,7 +40,7 @@ int Input::Grid(
 	for (j = 0; j < width; ++j) {
 		position[0] = (float)startX;
 		for (i = 0; i < width; ++i) {
-			mainGridParticles[j][i] = new Particle(1, position, Vector4(0, 0, 0, 0), mass, 5);
+			mainGridParticles[j][i] = new Particle(1, position, Vector4(0,0,0,0), mass, 0.0f);
 			position[0] += space;
 		}
 		position[1] -= space;
@@ -56,7 +56,7 @@ int Input::Grid(
 	for (j = 0; j < width - 1; ++j) {
 		position[0] = (startX);
 		for (i = 0; i < width - 1; ++i) {
-			crossGridParticles[j][i] = new Particle(1, position, Vector4(0, 0, 0, 0), crossMass, 5);
+			crossGridParticles[j][i] = new Particle(1, position, Vector4(0,0,0,0), crossMass, 0.0f);
 			position[0] += space;
 		}
 		position[1] -= space;
@@ -145,9 +145,20 @@ int Input::Grid(
 	//------------------------------------//
 
 	mainGridParticles[0][0]->fixed = true;
+	mainGridParticles[0][1]->fixed = true;
+	mainGridParticles[1][0]->fixed = true;
+
 	mainGridParticles[0][width - 1]->fixed = true;
+	mainGridParticles[0][width - 2]->fixed = true;
+	mainGridParticles[1][width - 1]->fixed = true;
+
 	mainGridParticles[width - 1][0]->fixed = true;
+	mainGridParticles[width - 2][0]->fixed = true;
+	mainGridParticles[width - 1][1]->fixed = true;
+
 	mainGridParticles[width - 1][width - 1]->fixed = true;
+	mainGridParticles[width - 2][width - 1]->fixed = true;
+	mainGridParticles[width - 1][width - 2]->fixed = true;
 
 	//------------------------------------//
 	// --- Copy Data into Scene --- //

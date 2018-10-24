@@ -76,18 +76,23 @@ Binding& Binding::operator=(const Binding& rhs) {
 
 void Binding::setup() { }
 void Binding::update() { }
-/*
-void Binding::draw(ofEasyCam& cam) {
+void Binding::draw() {
+	Vector4 buddyPositions[2] = {
+		this->buddies[0]->position,
+		this->buddies[1]->position
+	};
+	glBegin(GL_LINES);
+	glColor3f(1,1,1);
+	if(this->errDistance != 0.0 && this->errDistance != -0.0) {
+		float ratio = this->errDistance / this->initDistance;
+		float others = std::max(0.0, 1.0 - (ratio * 4.0));
+		if(ratio > 0.0)
+			glColor3f(1.0,others,others);
+	}
+	glVertex3f(buddyPositions[0][0],buddyPositions[0][1],buddyPositions[0][2]);
+	glVertex3f(buddyPositions[1][0],buddyPositions[1][1],buddyPositions[1][2]);
+	glEnd();
 }
-	ofVec4f _start, _end;
-	ofVec3f start, end;
-
-	_start = this->buddies[0]->position;
-	_end = this->buddies[1]->position;
-
-	ofDrawLine(_start.x, _start.y, _start.z, _end.x, _end.y, _end.z);
-
-}*/
 
 //----------------------------------------------------------------------------//
 // Miscellaneous Functions //

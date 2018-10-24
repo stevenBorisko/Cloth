@@ -54,25 +54,23 @@ void Scene::setup() {
 		binding->setup();
 }
 
-void Scene::update() {
-	PhysicsEngine::updateScene(this);
+void Scene::update(Scene* swap) {
+	PhysicsEngine::updateScene(this,swap);
 	for (auto& particle : this->particles)
 		particle->update();
 	for (auto& binding : this->bindings)
 		binding->update();
 }
 
-/*
-void Scene::draw(ofEasyCam& cam) {
+void Scene::draw() {
 	for (auto& particle : this->particles)
-		particle->draw(cam);
-	//for (auto& binding : this->bindings)
-	//	binding->draw(cam);
+		particle->draw();
+	for (auto& binding : this->bindings)
+		binding->draw();
 }
-*/
 
 //----------------------------------------------------------------------------//
-// Displayable Functions //
+// Miscellaneous //
 //----------------------------------------------------------------------------//
 
 void Scene::addParticle(Particle* particle) {
@@ -89,4 +87,42 @@ void Scene::addParticles(std::vector<Particle*> _particles) {
 
 void Scene::addBindings(std::vector<Binding*> _bindings) {
 	this->bindings.insert(this->bindings.end(), _bindings.begin(), _bindings.end());
+}
+//----------------------------------------------------------------------------//
+// Copying //
+//----------------------------------------------------------------------------//
+
+void Scene::deepCopyFrom(const Scene* other) {
+	unsigned int i;
+	this->globalGravity = other->globalGravity;
+	this->tick = other->tick;
+	// Ensure vectors are the same size
+	if(this->particles.size() != other->particles.size()) {
+		while(this->particles.size() < other->particles.size())
+			this->particles.emplace_back(new Particle);
+		while(this->particles.size() > other->particles.size()) {
+			delete this->particles.back();
+			this->particles.pop_back();
+		}
+	}
+	if(this->bindings.size() != other->bindings.size()) {
+		while(this->bindings.size() < other->bindings.size())
+			this->bindings.emplace_back(new Binding);
+		while(this->bindings.size() > other->bindings.size()) {
+			delete this->bindings.back();
+			this->bindings.pop_back();
+		}
+	}
+
+	// Copy data
+	i = 0;
+	for(auto& particle : other->particles)
+		*this->particles[i++] = *particle;
+	i = 0;
+	for(auto& binding : other->bindings)
+		*this->bindings[i++] = *binding;
+}
+
+void Scene::deepCopyInto(Scene* other) const {
+	other->deepCopyFrom(this);
 }

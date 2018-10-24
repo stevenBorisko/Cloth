@@ -4,7 +4,6 @@
 #include "../ParticleBinding/ParticleBinding.hpp"
 
 struct Scene: Displayable {
-	//TODO: start using std::vector<>
 
 	// Public Data
 	std::vector<Particle*> particles;
@@ -28,8 +27,8 @@ struct Scene: Displayable {
 
 	// Displayable Functions
 	void setup();
-	void update();
-	//void draw(ofEasyCam& cam);
+	void update(Scene* swap);
+	void draw();
 
 	// Miscellaneous
 	void addParticle(Particle* particle);
@@ -37,10 +36,13 @@ struct Scene: Displayable {
 	void addParticles(std::vector<Particle*> _particles);
 	void addBindings(std::vector<Binding*> _bindings);
 
+	// Copying
+	void deepCopyFrom(const Scene* other);
+	void deepCopyInto(Scene* other) const;
 };
 
 struct PhysicsEngine {
-	static void updateScene(Scene* scene);
+	static void updateScene(Scene* scene, Scene* swap);
 };
 
 
