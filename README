@@ -14,7 +14,7 @@ Sample driver setup:
 		at the same level
 
 Using the sample Makefile to compile:
-- Before compilation, you MUST execute `make ObjectDirectory`
+- Before compilation after pull, you MUST execute `make ObjectDirectory`
 - Compile: `make`
 - Compile and run: `make test`
 - Clean: `make clean`
@@ -28,7 +28,7 @@ Makefile setup:
 	$(CLOTH_MAIN_OBJ)
 - Add as a prerequisite for your clean target
 	ClothClean
-- Call `make ClothObjectDirectory` before compiling
+- Call `make ClothObjectDirectory` before compiling after pull
 
 - - - - Buzzwords - - - -
 
