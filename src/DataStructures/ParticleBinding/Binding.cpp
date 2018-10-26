@@ -6,9 +6,10 @@
 
 Binding::Binding():
 	dynamic(false),
-	initDistance(0),
+	restDistance(0),
 	errDistance(0),
-	springConstant(0)
+	springConstant(0),
+	lock(nullptr)
 {
 	buddies[0] = nullptr;
 	buddies[1] = nullptr;
@@ -17,7 +18,7 @@ Binding::Binding():
 Binding::Binding(
 	Particle* particleA,
 	Particle* particleB,
-	const float& _springConstant
+	const double& _springConstant
 ):
 	Binding(particleA,particleB,_springConstant,0.0)
 {
@@ -27,34 +28,43 @@ Binding::Binding(
 Binding::Binding(
 	Particle* particleA,
 	Particle* particleB,
-	const float& _springConstant,
-	const float& _initErrDistance
+	const double& _springConstant,
+	const double& _initErrDistance
 ):
 	dynamic(true),
-	initDistance(
+	restDistance(
 		V_magnitude(particleA->position - particleB->position)
 		- _initErrDistance
 	),
 	springConstant(_springConstant),
-	errDistance(_initErrDistance)
+	errDistance(_initErrDistance),
+	lock(new pthread_mutex_t)
 {
 	this->buddies[0] = particleA;
 	this->buddies[1] = particleB;
 	particleA->addBinding(this);
 	particleB->addBinding(this);
+
+	pthread_mutex_init(this->lock,nullptr);
 }
 
 Binding::Binding(const Binding& other):
 	dynamic(other.dynamic),
-	initDistance(other.initDistance),
+	restDistance(other.restDistance),
 	errDistance(other.errDistance),
-	springConstant(other.springConstant)
+	springConstant(other.springConstant),
+	lock(other.lock)
 {
 	this->buddies[0] = other.buddies[0];
 	this->buddies[1] = other.buddies[1];
 }
 
-Binding::~Binding() { }
+Binding::~Binding() {
+	if(this->lock) {
+		pthread_mutex_destroy(this->lock);
+		delete this->lock;
+	}
+}
 
 //----------------------------------------------------------------------------//
 // Operators //
@@ -62,11 +72,14 @@ Binding::~Binding() { }
 
 Binding& Binding::operator=(const Binding& rhs) {
 	this->dynamic = rhs.dynamic;
-	this->initDistance = rhs.initDistance;
+	this->restDistance = rhs.restDistance;
 	this->errDistance = rhs.errDistance;
 	this->springConstant = rhs.springConstant;
 	this->buddies[0] = rhs.buddies[0];
 	this->buddies[1] = rhs.buddies[1];
+
+	this->lock = rhs.lock;
+
 	return *this;
 }
 
@@ -77,6 +90,7 @@ Binding& Binding::operator=(const Binding& rhs) {
 void Binding::setup() { }
 void Binding::update() { }
 void Binding::draw() {
+/*
 	Vector4 buddyPositions[2] = {
 		this->buddies[0]->position,
 		this->buddies[1]->position
@@ -84,18 +98,29 @@ void Binding::draw() {
 	glBegin(GL_LINES);
 	glColor3f(1,1,1);
 	if(this->errDistance != 0.0 && this->errDistance != -0.0) {
-		float ratio = this->errDistance / this->initDistance;
-		float others = std::max(0.0, 1.0 - (ratio * 4.0));
+		double ratio = this->errDistance / this->restDistance;
+		double others = std::max(0.0, 1.0 - (ratio * 4.0));
 		if(ratio > 0.0)
 			glColor3f(1.0,others,others);
 	}
 	glVertex3f(buddyPositions[0][0],buddyPositions[0][1],buddyPositions[0][2]);
 	glVertex3f(buddyPositions[1][0],buddyPositions[1][1],buddyPositions[1][2]);
 	glEnd();
+*/
 }
 
 //----------------------------------------------------------------------------//
-// Miscellaneous Functions //
+// Setters //
+//----------------------------------------------------------------------------//
+
+void Binding::addDistance(const double& distance) {
+	pthread_mutex_lock(this->lock);
+	this->restDistance += distance;
+	pthread_mutex_unlock(this->lock);
+}
+
+//----------------------------------------------------------------------------//
+// Getters //
 //----------------------------------------------------------------------------//
 
 Vector4 Binding::getDisplacement() const {

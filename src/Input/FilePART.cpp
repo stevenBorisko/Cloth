@@ -20,11 +20,11 @@ int readLine(
 
 /*
 Format: `v <x> <y> <z>`
-- x (float):
+- x (double):
 	x value of the initial velocity of a particle
-- y (float):
+- y (double):
 	y value of the initial velocity of a particle
-- z (float):
+- z (double):
 	z value of the initial velocity of a particle
 */
 int readVelocity(
@@ -34,15 +34,15 @@ int readVelocity(
 
 /*
 Format: `p <x> <y> <z> <vIndex> <mass> <dynamic>`
-- x (float):
+- x (double):
 	x value of the initial position of the particle
-- y (float):
+- y (double):
 	y value of the initial position of the particle
-- z (float):
+- z (double):
 	z value of the initial position of the particle
 - vIndex (int):
 	Index of the initial velocity
-- mass (float):
+- mass (double):
 	Mass of the particle
 - dynamic (int):
 	0 - particle is static
@@ -60,12 +60,12 @@ Format: `b <p0> <p1> <springConstant> <dynamic> <initStretch>`
 	index of particle to bind to p1
 - p1 (int):
 	Index of particle to bind to p0
-- springConstant (float):
+- springConstant (double):
 	Physical spring
 - dynamic (int):
 	0 - binding is static
 	1 - binding is dynamic
-- initStretch (float):
+- initStretch (double):
 	How much the binding is stretched initially
 	Can be negative if is compressed initially
 	Not necessary if `dynamic` is 0
@@ -148,7 +148,7 @@ int readVelocity(
 	std::vector<Vector4>& velocities,
 	std::istringstream& lineStream
 ) {
-	float vx, vy, vz;
+	double vx, vy, vz;
 
 	if(!(lineStream >> vx >> vy >> vz)) return 1;
 	velocities.push_back(Vector4(vx,vy,vz,0));
@@ -162,7 +162,7 @@ int readParticle(
 	std::istringstream& lineStream
 ) {
 
-	float px, py, pz, mass;
+	double px, py, pz, mass;
 	int vIndex, dynamic;
 	if(!(lineStream >> px >> py >> pz >> vIndex >> mass >> dynamic)) return 1;
 
@@ -182,7 +182,7 @@ int readBinding(
 ) {
 
 	unsigned int particle0, particle1, dynamic;
-	float initStretch, springConstant;
+	double initStretch, springConstant;
 	lineStream >> particle0 >> particle1 >> springConstant >> dynamic;
 
 	if(dynamic) {

@@ -5,7 +5,7 @@ INPUT_LFLAGS :=
 
 INPUT_OBJDIR := $(INPUT_PATH).ObjectFiles/
 InputObjectDirectory:
-	mkdir $(INPUT_OBJDIR)
+	mkdir -p $(INPUT_OBJDIR)
 	@echo "- - - - Input ObjectFile directory created - - - -"
 
 _INPUT_DEPS := Input.hpp ../DataStructures/Scene/Scene.hpp

@@ -21,7 +21,7 @@ Scene::Scene(const Scene& other):
 Scene::Scene(
 	std::vector<Particle*> _particles,
 	std::vector<Binding*> _bindings,
-	const float& _globalGravity
+	const double& _globalGravity
 ):
 	particles(_particles),
 	bindings(_bindings),
@@ -65,8 +65,8 @@ void Scene::update(Scene* swap) {
 void Scene::draw() {
 	for (auto& particle : this->particles)
 		particle->draw();
-	for (auto& binding : this->bindings)
-		binding->draw();
+	//for (auto& binding : this->bindings)
+	//	binding->draw();
 }
 
 //----------------------------------------------------------------------------//

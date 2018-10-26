@@ -12,15 +12,16 @@ Particle::Particle():
 	mass(0.0),
 	radius(10),
 	charge(0.0),
-	bindings(std::vector<Binding*>())
+	bindings(std::vector<Binding*>()),
+	lock(nullptr)
 { }
 
 Particle::Particle(
 	const bool& _dynamic,
 	const Vector4& _position,
 	const Vector4& _velocity,
-	const float& _mass,
-	const float& _radius
+	const double& _mass,
+	const double& _radius
 ):
 	fixed(!_dynamic),
 	position(_position),
@@ -29,8 +30,11 @@ Particle::Particle(
 	mass(_mass),
 	radius(_radius),
 	charge(0.0),
-	bindings(std::vector<Binding*>())
-{ }
+	bindings(std::vector<Binding*>()),
+	lock(new pthread_mutex_t)
+{
+	pthread_mutex_init(lock, nullptr);
+}
 
 Particle::Particle(const Particle& other):
 	fixed(other.fixed),
@@ -40,10 +44,16 @@ Particle::Particle(const Particle& other):
 	mass(other.mass),
 	radius(other.radius),
 	charge(other.charge),
-	bindings(other.bindings)
+	bindings(other.bindings),
+	lock(other.lock)
 { }
 
-Particle::~Particle() { }
+Particle::~Particle() {
+	if(this->lock) {
+		pthread_mutex_destroy(lock);
+		delete(lock);
+	}
+}
 
 //----------------------------------------------------------------------------//
 // Operators //
@@ -59,6 +69,8 @@ Particle& Particle::operator=(const Particle& rhs) {
 	this->radius = rhs.radius;
 	this->charge = rhs.charge;
 	this->bindings = rhs.bindings;
+
+	this->lock = rhs.lock;
 
 	return *this;
 }
@@ -80,18 +92,40 @@ void Particle::draw() {
 	// particle is a point
 	} else {
 		glBegin(GL_POINTS);
+		double div,err = 0.0;
+		for(auto& binding : this->bindings) {
+			div = binding->errDistance / binding->restDistance;
+			if(div > 0.0) err += div;
+		}
+		err *= 2.0;
+		glColor3f(
+			std::min(1.0,err),
+			0.0,
+			std::max(0.0,1.0-err)
+		);
 		glVertex3f(this->position[0],this->position[1],this->position[2]);
 		glEnd();
 	}
 }
 
 //----------------------------------------------------------------------------//
-// Miscellaneous //
+// Setters //
 //----------------------------------------------------------------------------//
+// These will typically need to use a lock
 
 void Particle::addBinding(Binding* binding) {
 	this->bindings.emplace_back(binding);
 }
+
+void Particle::addForce(const Vector4& _force) {
+	pthread_mutex_lock(this->lock);
+	this->force += _force;
+	pthread_mutex_unlock(this->lock);
+}
+
+//----------------------------------------------------------------------------//
+// Getters //
+//----------------------------------------------------------------------------//
 
 Vector4 Particle::displacementTo(const Particle* particle) const {
 	return particle->position - this->position;

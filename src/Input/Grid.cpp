@@ -4,8 +4,8 @@ int Input::Grid(
 	Scene* scene,
 	const unsigned int& width,
 	const unsigned int& space,
-	const float& mass,
-	const float& springConstant
+	const double& mass,
+	const double& springConstant
 ) {
 
 	// Particle stuff to be copied into scene at the end
@@ -38,7 +38,7 @@ int Input::Grid(
 	startY += width * space;
 	position = Vector4(startX, startY, startZ, 0);
 	for (j = 0; j < width; ++j) {
-		position[0] = (float)startX;
+		position[0] = (double)startX;
 		for (i = 0; i < width; ++i) {
 			mainGridParticles[j][i] = new Particle(1, position, Vector4(0,0,0,0), mass, 0.0f);
 			position[0] += space;
@@ -48,7 +48,7 @@ int Input::Grid(
 	}
 
 	// Create crossGridParticles
-	float crossMass = mass * 0.1;
+	double crossMass = mass * 0.1;
 	startX += (space >> 1);
 	startY -= (space >> 1);
 	startZ += (space >> 1);
@@ -97,7 +97,7 @@ int Input::Grid(
 
 	// cross bindings
 		// southeast
-	float crossSpringConstant = springConstant * 1.2;
+	double crossSpringConstant = springConstant * 1.2;
 	for (j = 0; j < width - 1; ++j) {
 		for (i = 0; i < width - 1; ++i) {
 			bindings.emplace_back(
@@ -159,6 +159,9 @@ int Input::Grid(
 	mainGridParticles[width - 1][width - 1]->fixed = true;
 	mainGridParticles[width - 2][width - 1]->fixed = true;
 	mainGridParticles[width - 1][width - 2]->fixed = true;
+
+	for(i = 0;i < width;++i)
+		mainGridParticles[0][i]->fixed = true;
 
 	//------------------------------------//
 	// --- Copy Data into Scene --- //

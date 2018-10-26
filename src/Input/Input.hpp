@@ -16,8 +16,8 @@ struct Input {
 		Scene* scene,
 		const unsigned int& width,
 		const unsigned int& space,
-		const float& mass,
-		const float& springConstant
+		const double& mass,
+		const double& springConstant
 	);
 
 };

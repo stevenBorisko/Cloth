@@ -13,8 +13,25 @@
 #include "Cloth/src/DataStructures/Scene/Scene.hpp"
 #include "Cloth/src/Input/Input.hpp"
 
-#define HEIGHT 512
-#define WIDTH 512
+// Window Size
+#define HEIGHT 1024
+#define WIDTH 1024
+#define ASPECT (double)WIDTH / (double)HEIGHT
+
+// Field of view constants
+#define EYE_XVAL 2500.0f
+#define	EYE_YVAL (double)EYE_XVAL / 3.0f
+#define EYE_ZVAL EYE_XVAL
+
+#define FRUSTUM_NEAR (EYE_XVAL / 2.0f)
+#define FRUSTUM_FAR (EYE_XVAL * 2.0f)
+
+//----------------------------------------------------------------------------//
+// --- Global Variables for Main--- //
+//----------------------------------------------------------------------------//
+
+Scene* scene;
+Scene* swap;
 
 //----------------------------------------------------------------------------//
 // --- Helper Function Declarations--- //
@@ -25,14 +42,15 @@
 //------------------------------------//
 
 void renderScene(void);
+void updateScene(void);
 void processNormalKeys(unsigned char key, int x, int y);
-void changeSize(int w, int h);
 
 //------------------------------------//
 // --- Test Scenes --- //
 //------------------------------------//
 
-void testScene_00(Scene* scene);
+void testScene_00();
+void testScene_01();
 
 //----------------------------------------------------------------------------//
 // --- Main--- //
@@ -47,6 +65,12 @@ int main(int argc, char** argv) {
 
 	glutDisplayFunc(renderScene);
 	glutKeyboardFunc(processNormalKeys);
+	glutIdleFunc(updateScene);
+
+	scene = new Scene();
+	swap = new Scene();
+	testScene_00();
+	scene->globalGravity = -9.81;
 
 	glutMainLoop();
 
@@ -62,77 +86,69 @@ int main(int argc, char** argv) {
 //------------------------------------//
 
 void renderScene(void) {
-	static float angle = 0.0f;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glLoadIdentity();
 	gluLookAt(
-		0.0f,0.0f,10.0f,
-		0.0f,0.0f, 0.0f,
-		0.0f,1.0f, 0.0f
+		EYE_XVAL,EYE_YVAL,EYE_ZVAL,
+		0.0f,EYE_YVAL,0.0f,
+		0.0f,1.0f,0.0f
 	);
-	glRotatef(angle, 0.0f, 1.0f, 0.0f);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(45,ASPECT,FRUSTUM_NEAR,FRUSTUM_FAR);
 
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-2.0,-2.0,0.0);
-	glVertex3f(2.0,0.0,0.0);
-	glVertex3f(0.0,2.0,0.0);
-	glEnd();
-
-	angle += 1.0f;
+	scene->draw();
 
 	glutSwapBuffers();
 }
 
-void processNormalKeys(unsigned char key, int x, int y) {
-	if(key == 27) exit(0);
+void updateScene(void) {
+	std::cout << "Frame count: " << scene->tick++ << std::endl;
+	scene->update(swap);
+	glutPostRedisplay();
 }
 
-void changeSize(int w, int h) {
-
-	// Prevent a divide by zero, when window is too short
-	// (you cant make a window of zero width).
-	if (h == 0)
-		h = 1;
-
-	float ratio =  w * 1.0 / h;
-
-	// Use the Projection Matrix
-	glMatrixMode(GL_PROJECTION);
-
-	// Reset Matrix
-	glLoadIdentity();
-
-	// Set the viewport to be the entire window
-	glViewport(0, 0, w, h);
-
-	// Set the correct perspective.
-	gluPerspective(45.0f, ratio, 0.1f, 100.0f);
-
-	// Get Back to the Modelview
-	glMatrixMode(GL_MODELVIEW);
+void processNormalKeys(unsigned char key, int x, int y) {
+	if((key == 27) | (key == 'q')) exit(0);
 }
 
 //------------------------------------//
 // --- Test Scenes --- //
 //------------------------------------//
 
-void testScene_00(Scene* scene) {
+void testScene_00() {
 
+	// Grid dimensions
 	const unsigned int GRID_WIDTH = 20;
 	const unsigned int GRID_SPACE = 50;
-	const float BALL_RADIUS = 100;
-	const float BALL_MASS = 20;
 
-	Input::Grid(scene, GRID_WIDTH, GRID_SPACE, 1, 10);
+	// Ball dimensions
+	const double BALL_RADIUS = 50;
+	const double BALL_MASS = 25;
+
+	Input::Grid(scene, GRID_WIDTH, GRID_SPACE, 0.01, 1);
+
 	Particle* ball_0 = new Particle(
 		1,
-		Vector4(0,BALL_RADIUS*2.0,GRID_SPACE>>1,0) * (GRID_WIDTH >> 1),
+		Vector4(0,(GRID_SPACE * 50 + BALL_RADIUS)/15.0,GRID_SPACE>>1,0) * (GRID_WIDTH >> 1),
 		Vector4(0,0,0,0),
 		BALL_MASS,
 		BALL_RADIUS
 	);
-
 	scene->addParticle(ball_0);
+}
+
+void testScene_01() {
+	Particle* testParticles[2] = {
+		new Particle(1,Vector4(-50,0,0,0),Vector4(0,0,0,0),1,1),
+		new Particle(1,Vector4(50,0,0,0),Vector4(0,0,0,0),1,1),
+	};
+	Binding* testBinding = new Binding(
+		testParticles[0], testParticles[1],
+		1,0
+	);
+	scene->addParticle(testParticles[0]);
+	scene->addParticle(testParticles[1]);
+	scene->addBinding(testBinding);
 }

@@ -27,7 +27,7 @@ struct Particle: Displayable {
 	Vector4 position;
 	Vector4 velocity;
 	Vector4 force;
-	float mass, radius, charge;
+	double mass, radius, charge;
 	std::vector<Binding*> bindings;
 
 	// Constructors
@@ -36,8 +36,8 @@ struct Particle: Displayable {
 		const bool& _dynamic,
 		const Vector4& _position,
 		const Vector4& _velocity,
-		const float& _mass,
-		const float& _radius
+		const double& _mass,
+		const double& _radius
 	);
 	Particle(const Particle& other);
 	// bindings should be deleted manually
@@ -51,8 +51,11 @@ struct Particle: Displayable {
 	void update();
 	void draw();
 
-	// Miscellaneous
+	// Setters
 	void addBinding(Binding* binding);
+	void addForce(const Vector4& _force);
+
+	// Getters
 	// Vector from buddy0 to buddy1
 	Vector4 displacementTo(const Particle* particle) const;
 	bool intersects(const Particle* particle) const;
@@ -60,15 +63,15 @@ struct Particle: Displayable {
 
 private:
 
-	// Displayable data
+	pthread_mutex_t* lock;
 
 };
 
 struct Binding: Displayable {
 
 	bool dynamic;
-	float initDistance, errDistance;
-	float springConstant;
+	double restDistance, errDistance;
+	double springConstant;
 	Particle* buddies[2];
 
 	// Constructors
@@ -77,14 +80,14 @@ struct Binding: Displayable {
 	Binding(
 		Particle* thisParticle,
 		Particle* otherParticle,
-		const float& _springConstant
+		const double& _springConstant
 	);
 	// Implies dynamic binding
 	Binding(
 		Particle* thisParticle,
 		Particle* otherParticle,
-		const float& _springConstant,
-		const float& _initErrDistance
+		const double& _springConstant,
+		const double& _initErrDistance
 	);
 	Binding(const Binding& other);
 	~Binding();
@@ -97,13 +100,15 @@ struct Binding: Displayable {
 	void update();
 	void draw();
 
-	// Miscellaneous
+	// Setters
+	void addDistance(const double& distance);
+
+	// Getters
 	Vector4 getDisplacement() const;
 
 private:
-	// Displayable data
-	//ofCylinderPrimitive shape;
-	//ofMaterial shapeMaterial;
+
+	pthread_mutex_t* lock;
 
 };
 

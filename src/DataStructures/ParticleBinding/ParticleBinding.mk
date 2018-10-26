@@ -5,7 +5,7 @@ PARTICLEBINDING_LFLAGS :=
 
 PARTICLEBINDING_OBJDIR := $(PARTICLEBINDING_PATH).ObjectFiles/
 ParticleBindingObjectDirectory:
-	mkdir $(PARTICLEBINDING_OBJDIR)
+	mkdir -p $(PARTICLEBINDING_OBJDIR)
 	@echo "- - - - ParticleBinding ObjectFile directory created - - - -"
 
 _PARTICLEBINDING_DEPS := ParticleBinding.hpp ../../Displayable.hpp

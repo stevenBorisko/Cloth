@@ -5,7 +5,7 @@ PHYSICS_LFLAGS :=
 
 PHYSICS_OBJDIR := $(PHYSICS_PATH).ObjectFiles/
 PhysicsObjectDirectory:
-	mkdir $(PHYSICS_OBJDIR)
+	mkdir -p $(PHYSICS_OBJDIR)
 	@echo "- - - - Physics ObjectFile directory created - - - -"
 
 _PHYSICS_DEPS := Physics.hpp ../DataStructures/Scene/Scene.hpp

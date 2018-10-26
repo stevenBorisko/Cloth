@@ -1,19 +1,80 @@
-Simple cloth mesh simulator using springs
+Simple cloth mesh simulator using springs. This is a work in progress,
+	so there are, inevitably, many things wrong
 
-Makefile setup
-- Include Matrix4's makefile with
+The drawing of each object uses OpenGL. If you want to change that,
+	that will be in each Displayable's `draw` function
+
+- - - - Setup - - - -
+
+- - Using the sample driver given in SampleDriver/
+
+Sample driver setup:
+	Copy main.cpp and Makefile from SampleDriver/ to one level higher than Cloth/
+		Meaning Cloth/, main.cpp, and Makefile will be in the same directory
+		at the same level
+
+Using the sample Makefile to compile:
+- Before compilation, you MUST execute `make ObjectDirectory`
+- Compile: `make`
+- Compile and run: `make test`
+- Clean: `make clean`
+
+- - Using your own Makefile
+
+Makefile setup:
+- Include Cloth's makefile with
 	include Cloth/Cloth.mk
 - Add as a prerequisite for your executable target
 	$(CLOTH_MAIN_OBJ)
 - Add as a prerequisite for your clean target
 	ClothClean
+- Call `make ClothObjectDirectory` before compiling
 
-Sample driver setup:
-	copy the SampleDriver.cpp to where your makefile/project folder is
-		(probably one level higher than Cloth/)
+- - - - Buzzwords - - - -
+
+Particle: ParticleBinding.hpp
+	Has zero to many bindings
+
+Binding: ParticleBinding.hpp
+	Has exactly two particles
+
+Scene: Scene.hpp
+	Stores all of the data in the environment
+		- All the Bindings
+		- All the Particles
+		- Global settings like gravity
+
+Physics: Physics.hpp
+	Updates particle positions, velocities, and forces
+	Houses constants like THREAD_COUNT and TIME_STEP
+
+Input: Input.hpp
+	Generates a scene
 
 Noteworthy header files within Cloth:
 	src/DataStructures/ParticleBinding/ParticleBinding.hpp
 	src/DataStructures/Scene/Scene.hpp
 	src/Input/Input.hpp
 	src/Physics/Physics.hpp
+
+- - - - How it works - - - -
+
+A Binding connects two Particles.
+	It sort of acts like a spring that has no mass but has a point mass
+		(Particle) at each end of it.
+	Neither of these should be manipulated without extreme caution with respect
+		to thread safety.
+
+- - - - Done - - - -
+
+Gravity
+Spring Forces
+	Damping Forces
+Collisions between particles of size
+Thread safety
+
+- - - - To do - - - -
+
+Collisions between point particles
+Adaptive time step (swap scene)
+Pretty lines between particles

@@ -2,44 +2,25 @@
 
 #define COLLISION 50.0f
 
-void* t_collisionParticleParticle(void* t_data);
-
-void collisionParticleParticle(Scene* scene) {
-	unsigned int i;
-	pthread_t tids[THREAD_COUNT];
-	ThreadData tds[THREAD_COUNT];
-	for(i = 0;i < THREAD_COUNT;++i)
-		tds[i] = { scene, i };
-	for(i = 0;i < THREAD_COUNT;++i)
-		pthread_create(
-			tids + i,
-			NULL,
-			t_collisionParticleParticle,
-			tds + i
-		);
-	for(i = 0;i < THREAD_COUNT;++i)
-		pthread_join(tids[i],NULL);
-}
-
-void* t_collisionParticleParticle(void* t_data) {
-	ThreadData* tData = (ThreadData*)t_data;
+void collisionParticleParticle(Scene* scene, unsigned int tIndex) {
 
 	// variable delcaration
 	Vector4 displacementVector, notMasses, forceAB;
-	float displacement,intersection,sumOfRadii,massProd;
+	double displacement,intersection,sumOfRadii,massProd;
 
 	unsigned int i, j;
-	unsigned int pCount = tData->scene->particles.size();
+	unsigned int pCount = scene->particles.size();
 	bool APoint;
 
 	// iterate through each particle
-	for (i = tData->index; i < pCount;i += THREAD_COUNT) {
-		Particle* particleA = tData->scene->particles[i];
+	for (i = tIndex; i < pCount;i += THREAD_COUNT) {
+
+		Particle* particleA = scene->particles[i];
 		if(particleA->radius == 0.0 || particleA->radius == -0.0)
 			continue;
 		// iterate through each particle
 		for (j = i+1; j < pCount;++j) {
-			Particle* particleB = tData->scene->particles[j];
+			Particle* particleB = scene->particles[j];
 
 			if(particleB->radius == 0.0 || particleB->radius == -0.0)
 				continue;
@@ -59,7 +40,7 @@ void* t_collisionParticleParticle(void* t_data) {
 			if (intersection <= 0.0)
 				continue;
 
-			float coef = intersection;//std::log(intersection + 1.0);
+			double coef = intersection;//std::log(intersection + 1.0);
 			coef *= COLLISION * coef;
 			// normalize if possible
 			massProd = particleB->mass * particleA->mass;
@@ -68,9 +49,9 @@ void* t_collisionParticleParticle(void* t_data) {
 				* coef
 				* (1 / (displacement * displacement))
 			);
-			particleB->force += forceAB;
-			particleA->force += -forceAB;
+
+			particleB->addForce(forceAB);
+			particleA->addForce(-forceAB);
 		}
 	}
-	pthread_exit(NULL);
 }

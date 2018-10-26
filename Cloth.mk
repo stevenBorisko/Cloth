@@ -18,8 +18,9 @@ ClothObjectDirectory: \
 	SceneObjectDirectory \
 	InputObjectDirectory \
 	PhysicsObjectDirectory
-	mkdir $(CLOTH_OBJDIR)
-	mkdir $(CLOTH_OBJDIR)src/
+	mkdir -p $(CLOTH_OBJDIR)
+	mkdir -p $(CLOTH_OBJDIR)src/
+	@echo "- - - - Cloth ObjectFile directory created - - - -"
 
 _CLOTH_DEPS := src/Displayable.hpp
 CLOTH_DEPS := $(foreach OBJ,$(_CLOTH_DEPS),$(CLOTH_PATH)$(OBJ))

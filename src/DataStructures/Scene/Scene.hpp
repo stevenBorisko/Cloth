@@ -8,7 +8,7 @@ struct Scene: Displayable {
 	// Public Data
 	std::vector<Particle*> particles;
 	std::vector<Binding*> bindings;
-	float globalGravity;
+	double globalGravity;
 	unsigned long long tick;
 
 	// Constructors
@@ -17,7 +17,7 @@ struct Scene: Displayable {
 	Scene(
 		std::vector<Particle*> _particles,
 		std::vector<Binding*> _bindings,
-		const float& _globalGravity
+		const double& _globalGravity
 	);
 	// Particles and bindings should be deleted manually
 	~Scene();

@@ -5,7 +5,7 @@ SCENE_LFLAGS :=
 
 SCENE_OBJDIR := $(SCENE_PATH).ObjectFiles/
 SceneObjectDirectory:
-	mkdir $(SCENE_OBJDIR)
+	mkdir -p $(SCENE_OBJDIR)
 	@echo "- - - - Scene ObjectFile directory created - - - -"
 
 _SCENE_DEPS := Scene.hpp ../ParticleBinding/ParticleBinding.hpp
