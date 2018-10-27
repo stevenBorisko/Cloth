@@ -3,7 +3,6 @@
 
 #include <pthread.h>
 
-#define TIME_STEP ((double)1.0 / (double)1024.0)
 #define THREAD_COUNT 8
 
 #include "../DataStructures/Scene/Scene.hpp"

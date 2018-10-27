@@ -17,6 +17,10 @@ Using the sample Makefile to compile:
 - Before compilation after pull, you MUST execute `make ObjectDirectory`
 - Compile: `make`
 - Compile and run: `make test`
+- Compile, run, and record: `make record`
+	This puts the recording into `output.mp4`
+	If you don't rename this everytime you run,
+		it will overwrite the previous recording
 - Clean: `make clean`
 
 - - Using your own Makefile
@@ -43,10 +47,10 @@ Scene: Scene.hpp
 		- All the Bindings
 		- All the Particles
 		- Global settings like gravity
+		- TIME_STEP constant
 
 Physics: Physics.hpp
 	Updates particle positions, velocities, and forces
-	Houses constants like THREAD_COUNT and TIME_STEP
 
 Input: Input.hpp
 	Generates a scene

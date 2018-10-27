@@ -3,6 +3,9 @@
 
 #include "../ParticleBinding/ParticleBinding.hpp"
 
+#define TICKS_PER_SECOND 600
+#define TIME_STEP ((double)1.0 / (double)TICKS_PER_SECOND)
+
 struct Scene: Displayable {
 
 	// Public Data

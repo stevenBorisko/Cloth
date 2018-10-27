@@ -14,6 +14,5 @@ void updatePositions(Scene* scene, unsigned int tIndex) {
 		acceleration = particle->force * (1 / particle->mass);
 		particle->velocity += acceleration * TIME_STEP;
 		particle->position += particle->velocity * TIME_STEP;
-		//particle->velocity *= 0.99;
 	}
 }

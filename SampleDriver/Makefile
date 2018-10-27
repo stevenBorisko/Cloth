@@ -8,6 +8,8 @@ EXEC := execute.out
 compile: $(EXEC)
 test: compile
 	./$(EXEC)
+record: compile
+	./$(EXEC) -r
 
 include Cloth/Cloth.mk
 
