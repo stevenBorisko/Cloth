@@ -65,8 +65,8 @@ void Scene::update(Scene* swap) {
 void Scene::draw() {
 	for (auto& particle : this->particles)
 		particle->draw();
-	//for (auto& binding : this->bindings)
-	//	binding->draw();
+	for (auto& binding : this->bindings)
+		binding->draw();
 }
 
 //----------------------------------------------------------------------------//

@@ -3,7 +3,7 @@
 
 #include <pthread.h>
 
-#define THREAD_COUNT 8
+#define THREAD_COUNT 1
 
 #include "../DataStructures/Scene/Scene.hpp"
 

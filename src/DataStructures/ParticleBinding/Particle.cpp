@@ -91,13 +91,13 @@ void Particle::draw() {
 		glPopMatrix();
 	// particle is a point
 	} else {
-		glBegin(GL_POINTS);
 		double div,err = 0.0;
 		for(auto& binding : this->bindings) {
 			div = binding->errDistance / binding->restDistance;
 			if(div > 0.0) err += div;
 		}
 		err *= 2.0;
+		glBegin(GL_POINTS);
 		glColor3f(
 			std::min(1.0,err),
 			0.0,

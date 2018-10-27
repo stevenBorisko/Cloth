@@ -90,23 +90,22 @@ Binding& Binding::operator=(const Binding& rhs) {
 void Binding::setup() { }
 void Binding::update() { }
 void Binding::draw() {
-/*
+
 	Vector4 buddyPositions[2] = {
 		this->buddies[0]->position,
 		this->buddies[1]->position
 	};
+	double err = this->errDistance;
 	glBegin(GL_LINES);
-	glColor3f(1,1,1);
-	if(this->errDistance != 0.0 && this->errDistance != -0.0) {
-		double ratio = this->errDistance / this->restDistance;
-		double others = std::max(0.0, 1.0 - (ratio * 4.0));
-		if(ratio > 0.0)
-			glColor3f(1.0,others,others);
-	}
+	glColor3f(
+		std::min(1.0,err),
+		0.0,
+		std::max(0.0,1.0-err)
+	);
 	glVertex3f(buddyPositions[0][0],buddyPositions[0][1],buddyPositions[0][2]);
 	glVertex3f(buddyPositions[1][0],buddyPositions[1][1],buddyPositions[1][2]);
 	glEnd();
-*/
+
 }
 
 //----------------------------------------------------------------------------//

@@ -75,13 +75,13 @@ Gravity
 Spring Forces
 	Damping Forces
 Collisions between particles of size
+Pretty lines between particles
 Thread safety
 
 - - - - To do - - - -
 
 Collisions between point particles
 Adaptive time step (swap scene)
-Pretty lines between particles
 
 - - - - Tree - - - -
 
