@@ -194,6 +194,7 @@ void testScene_00() {
 
 	Input::Grid(scene, GRID_WIDTH, GRID_SPACE, 0.01, 0.5);
 
+/*
 	Particle* ball_0 = new Particle(
 		1,
 		Vector4(0,(GRID_SPACE * 50 + BALL_RADIUS)/15.0,GRID_SPACE>>1,0) * (GRID_WIDTH >> 1),
@@ -202,6 +203,7 @@ void testScene_00() {
 		BALL_RADIUS
 	);
 	scene->addParticle(ball_0);
+*/
 }
 
 void testScene_01() {

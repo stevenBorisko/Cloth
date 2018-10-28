@@ -97,11 +97,13 @@ void Binding::draw() {
 	};
 	double err = this->errDistance * 0.5;
 	glBegin(GL_LINES);
-	glColor3f(
-		std::min(1.0,err),
-		0.0,
-		std::max(0.0,1.0-err)
-	);
+	glColor3f(0.0,0.5,1.0);
+	if(err > 0.0)
+		glColor3f(
+			std::min(1.0,err),
+			std::max(0.0,0.5-err),
+			std::max(0.0,1.0-err)
+		);
 	glVertex3f(buddyPositions[0][0],buddyPositions[0][1],buddyPositions[0][2]);
 	glVertex3f(buddyPositions[1][0],buddyPositions[1][1],buddyPositions[1][2]);
 	glEnd();
