@@ -7,9 +7,9 @@ EXEC := execute.out
 # Main target
 compile: $(EXEC)
 test: compile
-	./$(EXEC)
+	./$(EXEC) -p
 record: compile
-	./$(EXEC) -r
+	./$(EXEC) -p -r
 
 include Cloth/Cloth.mk
 
@@ -21,13 +21,13 @@ ObjectDirectory: ClothObjectDirectory
 MAIN_DEPS := \
 	Cloth/src/DataStructures/Scene/Scene.hpp \
 	Cloth/src/Input/Input.hpp
-MAIN_OBJ := main.o
+MAIN_OBJ := $(MAIN_OBJDIR)main.o
 
 # Rules
 $(EXEC): $(MAIN_OBJ) $(CLOTH_MAIN_OBJ)
 	$(CC) $^ -o $@ $(LFLAGS)
 
-$(MAIN_OBJ): main.cpp $(MAIN_DEPS)
+$(MAIN_OBJDIR)%.o: %.cpp $(MAIN_DEPS)
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Clean

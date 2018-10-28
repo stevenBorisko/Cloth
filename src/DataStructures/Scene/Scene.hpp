@@ -7,6 +7,12 @@
 #define TICKS_PER_SECOND 600
 #define TIME_STEP ((double)1.0 / (double)TICKS_PER_SECOND)
 
+// Visibility Macros
+#define PARTICLES_VISIBLE 0x1
+#define PARTICLES_SIZE_VISIBLE 0x2
+#define BINDINGS_VISIBLE 0x4
+#define TRIANGLES_VISIBLE 0x8
+
 struct Scene {
 
 	// Public Data
@@ -14,6 +20,7 @@ struct Scene {
 	std::vector<Binding*> bindings;
 	std::vector<Triangle*> triangles;
 	double globalGravity;
+	char visibility;
 	unsigned long long tick;
 
 	// Constructors
@@ -23,7 +30,8 @@ struct Scene {
 		std::vector<Particle*> _particles,
 		std::vector<Binding*> _bindings,
 		std::vector<Triangle*> _triangles,
-		const double& _globalGravity
+		const double& _globalGravity,
+		const char& _visibility
 	);
 	// Particles and bindings should be deleted manually
 	~Scene();
@@ -33,24 +41,21 @@ struct Scene {
 
 	// Displayable Functions
 	void setup();
-	void update(Scene* swap);
+	void update();
 	void draw();
+	void setVisibility(char _visibility);
 
-	// Miscellaneous
+	// Append
 	void addParticle(Particle* particle);
 	void addBinding(Binding* binding);
 	void addTriangle(Triangle* triangle);
 	void addParticles(std::vector<Particle*> _particles);
 	void addBindings(std::vector<Binding*> _bindings);
 	void addTriangles(std::vector<Triangle*> _triangles);
-
-	// Copying
-	void deepCopyFrom(const Scene* other);
-	void deepCopyInto(Scene* other) const;
 };
 
 struct PhysicsEngine {
-	static void updateScene(Scene* scene, Scene* swap);
+	static void updateScene(Scene* scene);
 };
 
 

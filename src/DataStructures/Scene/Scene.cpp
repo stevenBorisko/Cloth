@@ -1,7 +1,7 @@
 #include "Scene.hpp"
 
 //----------------------------------------------------------------------------//
-// Constructors //
+// --- Constructors --- //
 //----------------------------------------------------------------------------//
 
 Scene::Scene() :
@@ -9,6 +9,7 @@ Scene::Scene() :
 	bindings(std::vector<Binding*>()),
 	triangles(std::vector<Triangle*>()),
 	globalGravity(0.0),
+	visibility(0),
 	tick(0)
 { }
 
@@ -17,6 +18,7 @@ Scene::Scene(const Scene& other):
 	bindings(other.bindings),
 	triangles(other.triangles),
 	globalGravity(other.globalGravity),
+	visibility(other.visibility),
 	tick(0)
 { }
 
@@ -24,19 +26,21 @@ Scene::Scene(
 	std::vector<Particle*> _particles,
 	std::vector<Binding*> _bindings,
 	std::vector<Triangle*> _triangles,
-	const double& _globalGravity
+	const double& _globalGravity,
+	const char& _visibility
 ):
 	particles(_particles),
 	bindings(_bindings),
 	triangles(_triangles),
 	globalGravity(_globalGravity),
+	visibility(_visibility),
 	tick(0)
 { }
 
 Scene::~Scene() { }
 
 //----------------------------------------------------------------------------//
-// Operators //
+// --- Operators --- //
 //----------------------------------------------------------------------------//
 
 Scene& Scene::operator=(const Scene& rhs) {
@@ -44,16 +48,17 @@ Scene& Scene::operator=(const Scene& rhs) {
 	this->bindings = rhs.bindings;
 	this->triangles = rhs.triangles;
 	this->globalGravity = rhs.globalGravity;
+	this->visibility = rhs.visibility;
 	this->tick = rhs.tick;
 	return *this;
 }
 
 //----------------------------------------------------------------------------//
-// Displayable Functions //
+// --- Displayable Functions --- //
 //----------------------------------------------------------------------------//
 
-void Scene::update(Scene* swap) {
-	PhysicsEngine::updateScene(this,swap);
+void Scene::update() {
+	PhysicsEngine::updateScene(this);
 	for (auto& particle : this->particles)
 		particle->update();
 	for (auto& binding : this->bindings)
@@ -63,16 +68,23 @@ void Scene::update(Scene* swap) {
 }
 
 void Scene::draw() {
-	for (auto& particle : this->particles)
-		particle->draw();
-	for (auto& binding : this->bindings)
-		binding->draw();
-	for (auto& triangle : this->triangles)
-		triangle->draw();
+	if(this->visibility & PARTICLES_VISIBLE)
+		for(auto& particle : this->particles)
+			particle->draw();
+	if(this->visibility & PARTICLES_SIZE_VISIBLE)
+		for(auto& particle : this->particles)
+			if(particle->radius > 0.0)
+				particle->draw();
+	if(this->visibility & BINDINGS_VISIBLE)
+		for(auto& binding : this->bindings)
+			binding->draw();
+	if(this->visibility & TRIANGLES_VISIBLE)
+		for(auto& triangle : this->triangles)
+			triangle->draw();
 }
 
 //----------------------------------------------------------------------------//
-// Miscellaneous //
+// --- Append --- //
 //----------------------------------------------------------------------------//
 
 void Scene::addParticle(Particle* particle) {
@@ -97,55 +109,4 @@ void Scene::addBindings(std::vector<Binding*> _bindings) {
 
 void Scene::addTriangles(std::vector<Triangle*> _triangles) {
 	this->triangles.insert(this->triangles.end(), _triangles.begin(), _triangles.end());
-}
-
-//----------------------------------------------------------------------------//
-// Copying //
-//----------------------------------------------------------------------------//
-
-void Scene::deepCopyFrom(const Scene* other) {
-	unsigned int i;
-	this->globalGravity = other->globalGravity;
-	this->tick = other->tick;
-
-	// Ensure vectors are the same size
-	if(this->particles.size() != other->particles.size()) {
-		while(this->particles.size() < other->particles.size())
-			this->particles.emplace_back(new Particle);
-		while(this->particles.size() > other->particles.size()) {
-			delete this->particles.back();
-			this->particles.pop_back();
-		}
-	}
-	if(this->bindings.size() != other->bindings.size()) {
-		while(this->bindings.size() < other->bindings.size())
-			this->bindings.emplace_back(new Binding);
-		while(this->bindings.size() > other->bindings.size()) {
-			delete this->bindings.back();
-			this->bindings.pop_back();
-		}
-	}
-	if(this->triangles.size() != other->triangles.size()) {
-		while(this->triangles.size() < other->triangles.size())
-			this->triangles.emplace_back(new Triangle);
-		while(this->triangles.size() > other->triangles.size()) {
-			delete this->triangles.back();
-			this->triangles.pop_back();
-		}
-	}
-
-	// Copy data
-	i = 0;
-	for(auto& particle : other->particles)
-		*this->particles[i++] = *particle;
-	i = 0;
-	for(auto& binding : other->bindings)
-		*this->bindings[i++] = *binding;
-	i = 0;
-	for(auto& triangle : other->triangles)
-		*this->triangles[i++] = *triangle;
-}
-
-void Scene::deepCopyInto(Scene* other) const {
-	other->deepCopyFrom(this);
 }

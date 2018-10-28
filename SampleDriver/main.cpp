@@ -2,13 +2,18 @@
 #include <stdio.h>
 #include <argp.h>
 
+#ifdef __APPLE__
+#include <GLUT/gl.h>
+#include <GLUT/glu.h>
+#include <GLUT/glut.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
+#endif
 
 #include "Cloth/src/DataStructures/Scene/Scene.hpp"
 #include "Cloth/src/Input/Input.hpp"
-#include "Cloth/src/Physics/Physics.hpp"
 
 #define FRAMES_PER_SECOND 60
 
@@ -18,7 +23,7 @@
 #define ASPECT (double)WIDTH / (double)HEIGHT
 
 // Field of view constants
-#define EYE_XVAL 2500.0f
+#define EYE_XVAL 5000.0f
 #define	EYE_YVAL (double)EYE_XVAL / 3.0f
 #define EYE_ZVAL EYE_XVAL
 
@@ -30,7 +35,6 @@
 //----------------------------------------------------------------------------//
 
 Scene* scene;
-Scene* swap;
 FILE* ffmpeg;
 int* buffer;
 bool recording;
@@ -67,8 +71,17 @@ void exitProgram();
 static int parse_opt(int key, char* arg, struct argp_state* state) {
 	switch(key) {
 	case 'r':
-		recording = true;
-		break;
+		recording = true; break;
+	case 'p':	
+		scene->visibility |= PARTICLES_VISIBLE; break;
+	case 's':
+		scene->visibility |= PARTICLES_SIZE_VISIBLE; break;
+	case 'b':
+		scene->visibility |= BINDINGS_VISIBLE; break;
+	case 't':
+		scene->visibility |= TRIANGLES_VISIBLE; break;
+	case 'w':
+		scene->visibility |= PARTICLES_SIZE_VISIBLE | BINDINGS_VISIBLE; break;
 	default:
 		break;
 	}
@@ -78,15 +91,19 @@ static int parse_opt(int key, char* arg, struct argp_state* state) {
 int main(int argc, char** argv) {
 
 	// Initialize global variables
-	scene = nullptr;
-	swap = nullptr;
+	scene = new Scene();
 	ffmpeg = nullptr;
 	buffer = {0};
 	recording = false;
 
 	// Parse arguments
 	struct argp_option options[] = {
-		{ 0, 'r', 0, 0, "record screen capture" },
+		{ "record", 'r', 0, 0, "Record screen capture" },
+		{ "pvis", 'p', 0, 0, "Particles visible" },
+		{ "psize", 's', 0, 0, "Particles with radius > 0.0 visible" },
+		{ "bvis", 'b', 0, 0, "Bindings visible" },
+		{ "tvis", 't', 0, 0, "Triangles visible" },
+		{ "wireframe", 'w', 0, 0, "Wireframe. Equivalent to -sb" },
 		{ 0 }
 	};
 	struct argp argp = { options, parse_opt };
@@ -104,8 +121,6 @@ int main(int argc, char** argv) {
 	glutIdleFunc(updateScene);
 
 	// Create scene
-	scene = new Scene();
-	swap = new Scene();
 	testScene_00();
 	scene->globalGravity = -9.81;
 
@@ -164,7 +179,7 @@ void renderScene(void) {
 void updateScene(void) {
 	//std::cout << "Frame count: " << scene->tick++ << std::endl;
 	++scene->tick;
-	scene->update(swap);
+	scene->update();
 	glutPostRedisplay();
 }
 
@@ -179,7 +194,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
 void testScene_00() {
 
 	// Grid dimensions
-	const unsigned int GRID_WIDTH = 20;
+	const unsigned int GRID_WIDTH = 50;
 	const unsigned int GRID_SPACE = 50;
 
 	// Ball dimensions

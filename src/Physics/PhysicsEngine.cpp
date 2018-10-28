@@ -14,11 +14,10 @@ void* t_updatePositions(void* t_data);
 // --- PhysicsEngine and Physics Implementation --- //
 //----------------------------------------------------------------------------//
 
-void PhysicsEngine::updateScene(Scene* scene, Scene* swap) {
+void PhysicsEngine::updateScene(Scene* scene) {
 
 	unsigned int i;
 	ThreadData tds[THREAD_COUNT];
-	scene->deepCopyInto(swap);
 
 	// reset the particles' forces
 	for(auto& particle : scene->particles)
