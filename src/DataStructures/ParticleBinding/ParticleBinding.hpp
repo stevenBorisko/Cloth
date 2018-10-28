@@ -1,15 +1,9 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#ifdef __APPLE__
-#include <GLUT/gl.h>
-#include <GLUT/glu.h>
-#include <GLUT/glut.h>
-#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#endif
 
 #include <cstring>
 #include <vector>
