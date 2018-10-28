@@ -95,7 +95,7 @@ void Binding::draw() {
 		this->buddies[0]->position,
 		this->buddies[1]->position
 	};
-	double err = this->errDistance;
+	double err = this->errDistance * 0.5;
 	glBegin(GL_LINES);
 	glColor3f(
 		std::min(1.0,err),

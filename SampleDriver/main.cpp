@@ -116,12 +116,14 @@ int main(int argc, char** argv) {
 	scene->globalGravity = -9.81;
 
 	// Open pipe to ffmpeg
-	const char* _cmd = "ffmpeg -r %d -f rawvideo -pix_fmt rgba -s %dx%d -i - "
-		"-threads 0 -preset fast -y -pix_fmt yuv420p -crf 21 -vf vflip output.mp4";
-	char cmd[256];
-	sprintf(cmd, _cmd, FRAMES_PER_SECOND, WIDTH, HEIGHT);
-	ffmpeg = popen(cmd, "w");
-	buffer = (int*)malloc(sizeof(int) * WIDTH * HEIGHT);
+	if(recording) {
+		const char* _cmd = "ffmpeg -r %d -f rawvideo -pix_fmt rgba -s %dx%d -i - "
+			"-threads 0 -preset fast -y -pix_fmt yuv420p -crf 21 -vf vflip output.mp4";
+		char cmd[256];
+		sprintf(cmd, _cmd, FRAMES_PER_SECOND, WIDTH, HEIGHT);
+		ffmpeg = popen(cmd, "w");
+		buffer = (int*)malloc(sizeof(int) * WIDTH * HEIGHT);
+	}
 
 	// Get er goin
 	glutMainLoop();
@@ -221,6 +223,6 @@ void testScene_01() {
 //------------------------------------//
 
 void exitProgram() {
-	pclose(ffmpeg);
+	if(recording) pclose(ffmpeg);
 	exit(0);
 }
