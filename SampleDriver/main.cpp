@@ -2,15 +2,9 @@
 #include <stdio.h>
 #include <argp.h>
 
-#ifdef __APPLE__
-#include <GLUT/gl.h>
-#include <GLUT/glu.h>
-#include <GLUT/glut.h>
-#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#endif
 
 #include "Cloth/src/DataStructures/Scene/Scene.hpp"
 #include "Cloth/src/Input/Input.hpp"
