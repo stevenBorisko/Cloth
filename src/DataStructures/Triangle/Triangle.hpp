@@ -1,7 +1,11 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include "../../../lib/Matrix4/src/Matrix4.hpp"
+
 #include "../ParticleBinding/ParticleBinding.hpp"
+
+struct Plane;
 
 struct Triangle {
 
@@ -16,6 +20,11 @@ struct Triangle {
 	void update();
 	void draw();
 
+};
+
+struct Plane {
+	Vector4 point;
+	Vector4 normal;
 };
 
 #endif

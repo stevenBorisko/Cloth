@@ -17,7 +17,7 @@ ClothObjectDirectory: \
 	Matrix4ObjectDirectory \
 	ParticleBindingObjectDirectory \
 	SceneObjectDirectory \
-	TRiangleObjectDirectory \
+	TriangleObjectDirectory \
 	InputObjectDirectory \
 	PhysicsObjectDirectory
 	mkdir -p $(CLOTH_OBJDIR)

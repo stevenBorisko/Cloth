@@ -168,7 +168,7 @@ int readParticle(
 
 	particles.emplace_back(
 		new Particle(
-			dynamic, Vector4(px,py,pz,0), velocities[vIndex], mass, 10
+			dynamic, Vector4(px,py,pz,1), velocities[vIndex], mass, 10
 		)
 	);
 

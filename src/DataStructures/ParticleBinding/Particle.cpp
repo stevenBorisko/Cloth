@@ -79,7 +79,6 @@ Particle& Particle::operator=(const Particle& rhs) {
 // Displayable Functions //
 //----------------------------------------------------------------------------//
 
-void Particle::setup() { }
 void Particle::update() { }
 void Particle::draw() {
 	// particle is a sphere

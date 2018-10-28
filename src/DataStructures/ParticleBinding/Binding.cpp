@@ -87,10 +87,9 @@ Binding& Binding::operator=(const Binding& rhs) {
 // Displayable Functions //
 //----------------------------------------------------------------------------//
 
-void Binding::setup() { }
 void Binding::update() { }
 void Binding::draw() {
-
+return;
 	Vector4 buddyPositions[2] = {
 		this->buddies[0]->position,
 		this->buddies[1]->position

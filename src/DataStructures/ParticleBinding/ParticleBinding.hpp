@@ -41,11 +41,10 @@ struct Particle {
 	// bindings should be deleted manually
 	~Particle();
 
-	// Operators
+	// Operator Overloads
 	Particle& operator=(const Particle& rhs);
 
 	// Displayable Functions
-	void setup();
 	void update();
 	void draw();
 
@@ -94,7 +93,6 @@ struct Binding {
 	Binding& operator=(const Binding& rhs);
 
 	// Displayable Functions
-	void setup();
 	void update();
 	void draw();
 

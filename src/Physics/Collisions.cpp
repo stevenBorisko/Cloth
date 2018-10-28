@@ -2,7 +2,7 @@
 
 #define COLLISION 50.0f
 
-void collisionParticleParticle(Scene* scene, unsigned int tIndex) {
+void collisionSphereSphere(Scene* scene, unsigned int tIndex) {
 
 	// variable delcaration
 	Vector4 displacementVector, notMasses, forceAB;
@@ -52,6 +52,20 @@ void collisionParticleParticle(Scene* scene, unsigned int tIndex) {
 
 			particleB->addForce(forceAB);
 			particleA->addForce(-forceAB);
+		}
+	}
+}
+
+void collisionSphereMesh(Scene* scene, unsigned int tIndex) {
+	unsigned int i, j;
+	unsigned int pCount = scene->particles.size();
+	unsigned int tCount = scene->triangles.size();
+
+	// iterate through each particle
+	for (i = tIndex; i < pCount;i += THREAD_COUNT) {
+		// iterate through each triangle
+		for (j = 0; j < tCount;++j) {
+			// TODO
 		}
 	}
 }

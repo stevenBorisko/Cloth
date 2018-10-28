@@ -17,7 +17,7 @@ int Input::Grid(
 	int startY = (int)((width * space) >> 1);
 	int startX = -startY;
 	int startZ = 0;
-	Vector4 position(0, 0, 0, 0);
+	Vector4 position(0, 0, 0, 1);
 	unsigned int i, j;
 
 	//------------------------------------//
@@ -36,7 +36,7 @@ int Input::Grid(
 
 	// Create mainGridParticles
 	startY += width * space;
-	position = Vector4(startX, startY, startZ, 0);
+	position = Vector4(startX, startY, startZ, 1);
 	for (j = 0; j < width; ++j) {
 		position[0] = (double)startX;
 		for (i = 0; i < width; ++i) {
@@ -52,7 +52,7 @@ int Input::Grid(
 	startX += (space >> 1);
 	startY -= (space >> 1);
 	startZ += (space >> 1);
-	position = Vector4(startX, startY, startZ, 0);
+	position = Vector4(startX, startY, startZ, 1);
 	for (j = 0; j < width - 1; ++j) {
 		position[0] = (startX);
 		for (i = 0; i < width - 1; ++i) {
