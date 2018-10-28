@@ -8,6 +8,7 @@ CLOTH_LFLAGS :=
 include $(CLOTH_PATH)lib/Matrix4/Matrix4.mk
 include $(CLOTH_PATH)src/DataStructures/ParticleBinding/ParticleBinding.mk
 include $(CLOTH_PATH)src/DataStructures/Scene/Scene.mk
+include $(CLOTH_PATH)src/DataStructures/Triangle/Triangle.mk
 include $(CLOTH_PATH)src/Input/Input.mk
 include $(CLOTH_PATH)src/Physics/Physics.mk
 
@@ -16,16 +17,17 @@ ClothObjectDirectory: \
 	Matrix4ObjectDirectory \
 	ParticleBindingObjectDirectory \
 	SceneObjectDirectory \
+	TRiangleObjectDirectory \
 	InputObjectDirectory \
 	PhysicsObjectDirectory
 	mkdir -p $(CLOTH_OBJDIR)
 	mkdir -p $(CLOTH_OBJDIR)src/
 	@echo "- - - - Cloth ObjectFile directory created - - - -"
 
-_CLOTH_DEPS := src/Displayable.hpp
+_CLOTH_DEPS :=
 CLOTH_DEPS := $(foreach OBJ,$(_CLOTH_DEPS),$(CLOTH_PATH)$(OBJ))
 
-_CLOTH_SUB_OBJS := src/Displayable.o
+_CLOTH_SUB_OBJS :=
 CLOTH_SUB_OBJS := $(foreach OBJ,$(_CLOTH_SUB_OBJS),$(CLOTH_OBJDIR)$(OBJ))
 
 # --- Rules ---
@@ -36,6 +38,7 @@ $(CLOTH_MAIN_OBJ): \
 	$(MATRIX4_MAIN_OBJ) \
 	$(PARTICLEBINDING_MAIN_OBJ) \
 	$(SCENE_MAIN_OBJ) \
+	$(TRIANGLE_MAIN_OBJ) \
 	$(INPUT_MAIN_OBJ) \
 	$(PHYSICS_MAIN_OBJ)
 	@echo "- - - - Cloth compiled - - - -"
@@ -47,5 +50,11 @@ $(CLOTH_OBJDIR)%.o: $(CLOTH_PATH)%.cpp $(CLOTH_DEPS)
 	$(CC) -c $(CLOTH_CFLAGS) $< -o $@
 
 # Clean
-ClothClean: Matrix4Clean ParticleBindingClean SceneClean InputClean PhysicsClean
+ClothClean: \
+	Matrix4Clean \
+	ParticleBindingClean \
+	SceneClean \
+	TriangleClean \
+	InputClean \
+	PhysicsClean
 	rm -f $(CLOTH_SUB_OBJS) $(CLOTH_MAIN_OBJ)

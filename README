@@ -42,6 +42,9 @@ Particle: ParticleBinding.hpp
 Binding: ParticleBinding.hpp
 	Has exactly two particles
 
+Triangle: Triangle.hpp
+	Has three bindings
+
 Scene: Scene.hpp
 	Stores all of the data in the environment
 		- All the Bindings
@@ -58,6 +61,7 @@ Input: Input.hpp
 Noteworthy header files within Cloth:
 	src/DataStructures/ParticleBinding/ParticleBinding.hpp
 	src/DataStructures/Scene/Scene.hpp
+	src/DataStructures/Triangle/Triangle.hpp
 	src/Input/Input.hpp
 	src/Physics/Physics.hpp
 
@@ -81,10 +85,12 @@ Thread safety
 - - - - To do - - - -
 
 Collisions between point particles
+	Will be done with Triangle
 Adaptive time step (swap scene)
 
 - - - - Tree - - - -
 
+.
 |-- Cloth.mk
 |-- lib
 |   `-- Matrix4
@@ -111,12 +117,16 @@ Adaptive time step (swap scene)
     |   |   |-- ParticleBinding.hpp
     |   |   |-- ParticleBinding.mk
     |   |   `-- Particle.cpp
-    |   `-- Scene
-    |       |-- Scene.cpp
-    |       |-- Scene.hpp
-    |       `-- Scene.mk
-    |-- Displayable.cpp
-    |-- Displayable.hpp
+    |   |-- Scene
+    |   |   |-- Scene.cpp
+    |   |   |-- Scene.hpp
+    |   |   `-- Scene.mk
+    |   `-- Triangle
+    |       |-- Constructors.cpp
+    |       |-- Displayables.cpp
+    |       |-- OperatorOverloads.cpp
+    |       |-- Triangle.hpp
+    |       `-- Triangle.mk
     |-- Input
     |   |-- FilePART.cpp
     |   |-- Grid.cpp

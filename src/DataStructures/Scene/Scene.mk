@@ -8,7 +8,10 @@ SceneObjectDirectory:
 	mkdir -p $(SCENE_OBJDIR)
 	@echo "- - - - Scene ObjectFile directory created - - - -"
 
-_SCENE_DEPS := Scene.hpp ../ParticleBinding/ParticleBinding.hpp
+_SCENE_DEPS := \
+	Scene.hpp \
+	../ParticleBinding/ParticleBinding.hpp \
+	../Triangle/Triangle.hpp
 SCENE_DEPS := $(foreach OBJ,$(_SCENE_DEPS),$(SCENE_PATH)$(OBJ))
 
 _SCENE_SUB_OBJS := \

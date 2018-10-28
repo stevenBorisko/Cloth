@@ -17,11 +17,9 @@
 
 #include "../../../lib/Matrix4/src/Matrix4.hpp"
 
-#include "../../Displayable.hpp"
-
 struct Binding;
 
-struct Particle: Displayable {
+struct Particle {
 
 	bool fixed;
 	Vector4 position;
@@ -67,7 +65,7 @@ private:
 
 };
 
-struct Binding: Displayable {
+struct Binding {
 
 	bool dynamic;
 	double restDistance, errDistance;
