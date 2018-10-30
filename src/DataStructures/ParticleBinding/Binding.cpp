@@ -93,15 +93,10 @@ void Binding::draw() {
 		this->buddies[0]->position,
 		this->buddies[1]->position
 	};
-	double err = this->errDistance * 0.5;
+	ColorRGB color = this->getColor();
+
 	glBegin(GL_LINES);
-	glColor3f(0.0,0.5,1.0);
-	if(err > 0.0)
-		glColor3f(
-			std::min(1.0,err),
-			std::max(0.0,0.5-err),
-			std::max(0.0,1.0-err)
-		);
+	glColor3f(color.r,color.g,color.b);
 	glVertex3f(buddyPositions[0][0],buddyPositions[0][1],buddyPositions[0][2]);
 	glVertex3f(buddyPositions[1][0],buddyPositions[1][1],buddyPositions[1][2]);
 	glEnd();
@@ -118,10 +113,36 @@ void Binding::addDistance(const double& distance) {
 	pthread_mutex_unlock(this->lock);
 }
 
+void Binding::makeFirst(Particle* particle) {
+	if(this->buddies[0] != particle) {
+		this->buddies[1] = this->buddies[0];
+		this->buddies[0] = particle;
+	}
+}
+
 //----------------------------------------------------------------------------//
 // Getters //
 //----------------------------------------------------------------------------//
 
 Vector4 Binding::getDisplacement() const {
 	return this->buddies[0]->displacementTo(this->buddies[1]);
+}
+
+bool Binding::hasBuddy(const Particle* particle) const {
+	return ((this->buddies[0] == particle) | (this->buddies[1] == particle));
+}
+
+Particle* Binding::getOtherBuddy(const Particle* particle) const {
+	return this->buddies[this->buddies[0] == particle];
+}
+
+ColorRGB Binding::getColor() const {
+	double err = 2.0 * this->errDistance / this->restDistance;
+	return (err > 0.0)
+		? ColorRGB(
+			std::min(1.0,err),
+			std::max(0.0,0.5-err),
+			std::max(0.0,1.0-err)
+		)
+		: ColorRGB(0.0,0.5,1.0);
 }

@@ -2,15 +2,9 @@
 #include <stdio.h>
 #include <argp.h>
 
-#ifdef __APPLE__
-#include <GLUT/gl.h>
-#include <GLUT/glu.h>
-#include <GLUT/glut.h>
-#else
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#endif
 
 #include "Cloth/src/DataStructures/Scene/Scene.hpp"
 #include "Cloth/src/Input/Input.hpp"
@@ -23,7 +17,7 @@
 #define ASPECT (double)WIDTH / (double)HEIGHT
 
 // Field of view constants
-#define EYE_XVAL 5000.0f
+#define EYE_XVAL 5500.0f
 #define	EYE_YVAL (double)EYE_XVAL / 3.0f
 #define EYE_ZVAL EYE_XVAL
 
@@ -110,6 +104,9 @@ int main(int argc, char** argv) {
 	argp_parse(&argp, argc, argv, 0, 0, 0);
 
 	// Initialize OpenGL stuff
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 	glutInit(&argc,argv);
 	glutInitWindowPosition(0,0);
 	glutInitWindowSize(WIDTH,HEIGHT);
@@ -194,39 +191,39 @@ void processNormalKeys(unsigned char key, int x, int y) {
 void testScene_00() {
 
 	// Grid dimensions
-	const unsigned int GRID_WIDTH = 50;
-	const unsigned int GRID_SPACE = 50;
+	const unsigned int GRID_WIDTH = 100;
+	const unsigned int GRID_SPACE = 25;
 
 	// Ball dimensions
 	const double BALL_RADIUS = 50;
 	const double BALL_MASS = 25;
 
-	Input::Grid(scene, GRID_WIDTH, GRID_SPACE, 0.01, 0.5);
+	Input::Grid(scene, GRID_WIDTH, GRID_SPACE, 0.01, 5.0);
 
 /*
-	Particle* ball_0 = new Particle(
-		1,
-		Vector4(0,(GRID_SPACE * 50 + BALL_RADIUS)/15.0,GRID_SPACE>>1,0) * (GRID_WIDTH >> 1),
-		Vector4(0,0,0,0),
-		BALL_MASS,
-		BALL_RADIUS
-	);
-	scene->addParticle(ball_0);
+Particle* ball_0 = new Particle(
+	1,
+	Vector4(0,(GRID_SPACE * 50 + BALL_RADIUS)/15.0,GRID_SPACE>>1,0) * (GRID_WIDTH >> 1),
+	Vector4(0,0,0,0),
+	BALL_MASS,
+	BALL_RADIUS
+);
+scene->addParticle(ball_0);
 */
 }
 
 void testScene_01() {
-	Particle* testParticles[2] = {
-		new Particle(1,Vector4(-50,0,0,0),Vector4(0,0,0,0),1,1),
-		new Particle(1,Vector4(50,0,0,0),Vector4(0,0,0,0),1,1),
-	};
-	Binding* testBinding = new Binding(
-		testParticles[0], testParticles[1],
-		1,0
-	);
-	scene->addParticle(testParticles[0]);
-	scene->addParticle(testParticles[1]);
-	scene->addBinding(testBinding);
+Particle* testParticles[2] = {
+	new Particle(1,Vector4(-50,0,0,0),Vector4(0,0,0,0),1,1),
+	new Particle(1,Vector4(50,0,0,0),Vector4(0,0,0,0),1,1),
+};
+Binding* testBinding = new Binding(
+	testParticles[0], testParticles[1],
+	1,0
+);
+scene->addParticle(testParticles[0]);
+scene->addParticle(testParticles[1]);
+scene->addBinding(testBinding);
 }
 
 //------------------------------------//
@@ -234,6 +231,6 @@ void testScene_01() {
 //------------------------------------//
 
 void exitProgram() {
-	if(recording) pclose(ffmpeg);
-	exit(0);
+if(recording) pclose(ffmpeg);
+exit(0);
 }

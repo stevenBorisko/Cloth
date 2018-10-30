@@ -12,6 +12,7 @@ int Input::Grid(
 	Particle*** mainGridParticles;
 	Particle*** crossGridParticles;
 	std::vector<Binding*> bindings;
+	std::vector<Triangle*> triangles;
 
 	// other local variables
 	int startY = (int)((width * space) >> 1);
@@ -141,6 +142,47 @@ int Input::Grid(
 	}
 
 	//------------------------------------//
+	// --- Triangles --- //
+	//------------------------------------//
+
+	for(j = 1;j < width; ++j) {
+		for(i = 1;i < width;++i) {
+			// bottom
+			triangles.emplace_back(
+				new Triangle(
+					mainGridParticles[j][i],
+					crossGridParticles[j-1][i-1],
+					mainGridParticles[j][i-1]
+				)
+			);
+			// right
+			triangles.emplace_back(
+				new Triangle(
+					mainGridParticles[j][i],
+					crossGridParticles[j-1][i-1],
+					mainGridParticles[j-1][i]
+				)
+			);
+			// left
+			triangles.emplace_back(
+				new Triangle(
+					mainGridParticles[j-1][i-1],
+					crossGridParticles[j-1][i-1],
+					mainGridParticles[j][i-1]
+				)
+			);
+			// top
+			triangles.emplace_back(
+				new Triangle(
+					mainGridParticles[j-1][i-1],
+					crossGridParticles[j-1][i-1],
+					mainGridParticles[j-1][i]
+				)
+			);
+		}
+	}
+
+	//------------------------------------//
 	// --- Final Tweaks --- //
 	//------------------------------------//
 
@@ -174,6 +216,7 @@ int Input::Grid(
 		for (i = 0; i < width - 1; ++i)
 			scene->addParticle(crossGridParticles[j][i]);
 	scene->addBindings(bindings);
+	scene->addTriangles(triangles);
 
 	//------------------------------------//
 	// --- Free Memory --- //

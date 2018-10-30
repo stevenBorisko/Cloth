@@ -10,6 +10,7 @@
 #include <iterator>
 
 #include "../../../lib/Matrix4/src/Matrix4.hpp"
+#include "../../Graphics/Color/Color.hpp"
 
 struct Binding;
 
@@ -50,7 +51,12 @@ struct Particle {
 	// Vector from buddy0 to buddy1
 	Vector4 displacementTo(const Particle* particle) const;
 	bool intersects(const Particle* particle) const;
+	// if one of the bindings has `particle` as a buddy
 	bool hasBuddy(const Particle* particle) const;
+	// retrieves the binding that has `this` and `particle` as buddies
+	// nullptr if there is no binding to `particle`
+	Binding* getBindingTo(const Particle* particle) const;
+	ColorRGB getColor() const;
 
 private:
 
@@ -92,9 +98,14 @@ struct Binding {
 
 	// Setters
 	void addDistance(const double& distance);
+	// makes `particle` buddy[0] (flips them if necessary)
+	void makeFirst(Particle* particle);
 
 	// Getters
 	Vector4 getDisplacement() const;
+	bool hasBuddy(const Particle* particle) const;
+	Particle* getOtherBuddy(const Particle* particle) const;
+	ColorRGB getColor() const;
 
 private:
 

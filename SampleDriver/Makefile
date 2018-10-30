@@ -6,6 +6,8 @@ EXEC := execute.out
 
 # Main target
 compile: $(EXEC)
+	@echo "- - - - Project compiled - - - -"
+	@echo "Executable: $(EXEC)"
 test: compile
 	./$(EXEC) -p
 record: compile

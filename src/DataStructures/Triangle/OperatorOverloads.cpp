@@ -1,8 +1,8 @@
 #include "Triangle.hpp"
 
 Triangle& Triangle::operator=(const Triangle& rhs) {
-	this->bindings[0] = rhs.bindings[0];
-	this->bindings[1] = rhs.bindings[1];
-	this->bindings[2] = rhs.bindings[2];
+	this->particles[0] = rhs.particles[0];
+	this->particles[1] = rhs.particles[1];
+	this->particles[2] = rhs.particles[2];
 	return *this;
 }

@@ -8,7 +8,7 @@ ParticleBindingObjectDirectory:
 	mkdir -p $(PARTICLEBINDING_OBJDIR)
 	@echo "- - - - ParticleBinding ObjectFile directory created - - - -"
 
-_PARTICLEBINDING_DEPS := ParticleBinding.hpp
+_PARTICLEBINDING_DEPS := ParticleBinding.hpp ../../Graphics/Color/Color.hpp
 PARTICLEBINDING_DEPS := $(foreach OBJ,$(_PARTICLEBINDING_DEPS),$(PARTICLEBINDING_PATH)$(OBJ))
 
 _PARTICLEBINDING_SUB_OBJS := \

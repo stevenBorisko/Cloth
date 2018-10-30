@@ -4,7 +4,7 @@
 #include "../Triangle/Triangle.hpp"
 #include "../ParticleBinding/ParticleBinding.hpp"
 
-#define TICKS_PER_SECOND 600
+#define TICKS_PER_SECOND 1200
 #define TIME_STEP ((double)1.0 / (double)TICKS_PER_SECOND)
 
 // Visibility Macros

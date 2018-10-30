@@ -10,13 +10,18 @@ TriangleObjectDirectory:
 
 _TRIANGLE_DEPS := \
 	Triangle.hpp \
-	../ParticleBinding/ParticleBinding.hpp
+	../ParticleBinding/ParticleBinding.hpp \
+	../../Graphics/Color/Color.hpp
 TRIANGLE_DEPS := $(foreach OBJ,$(_TRIANGLE_DEPS),$(TRIANGLE_PATH)$(OBJ))
 
 _TRIANGLE_SUB_OBJS := \
+	Calculation.o \
 	Constructors.o \
 	Displayables.o \
-	OperatorOverloads.o
+	Getters.o \
+	OperatorOverloads.o \
+	Plane.o \
+	Private.o
 TRIANGLE_SUB_OBJS := \
 	$(foreach OBJ,$(_TRIANGLE_SUB_OBJS),$(TRIANGLE_OBJDIR)$(OBJ))
 

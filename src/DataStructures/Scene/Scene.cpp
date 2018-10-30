@@ -58,13 +58,13 @@ Scene& Scene::operator=(const Scene& rhs) {
 //----------------------------------------------------------------------------//
 
 void Scene::update() {
-	PhysicsEngine::updateScene(this);
 	for (auto& particle : this->particles)
 		particle->update();
 	for (auto& binding : this->bindings)
 		binding->update();
 	for (auto& triangle : this->triangles)
 		triangle->update();
+	PhysicsEngine::updateScene(this);
 }
 
 void Scene::draw() {

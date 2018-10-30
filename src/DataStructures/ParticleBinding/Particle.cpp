@@ -81,27 +81,18 @@ Particle& Particle::operator=(const Particle& rhs) {
 
 void Particle::update() { }
 void Particle::draw() {
+	ColorRGB color = this->getColor();
 	// particle is a sphere
 	if(this->radius > 0.0) {
-		glColor3f(0,1,0);
+		glColor3f(color.r,color.g,color.b);
 		glPushMatrix();
 		glTranslatef(this->position[0],this->position[1],this->position[2]);
 		glutWireSphere(this->radius,10,10);
 		glPopMatrix();
 	// particle is a point
 	} else {
-		double div,err = 0.0;
-		for(auto& binding : this->bindings) {
-			div = binding->errDistance / binding->restDistance;
-			if(div > 0.0) err += div;
-		}
-		err *= 2.0;
 		glBegin(GL_POINTS);
-		glColor3f(
-			std::min(1.0,err),
-			0.0,
-			std::max(0.0,1.0-err)
-		);
+		glColor3f(color.r,color.g,color.b);
 		glVertex3f(this->position[0],this->position[1],this->position[2]);
 		glEnd();
 	}
@@ -135,8 +126,33 @@ bool Particle::intersects(const Particle* particle) const {
 }
 
 bool Particle::hasBuddy(const Particle* particle) const {
+	return !!this->getBindingTo(particle);
+}
+
+Binding* Particle::getBindingTo(const Particle* particle) const {
 	for (auto& binding : this->bindings)
-		if(binding->buddies[0] == particle || binding->buddies[0] == particle)
-			return true;
-	return false;
+		if(binding->hasBuddy(particle))
+			return binding;
+	return nullptr;
+}
+
+ColorRGB Particle::getColor() const {
+	double div, err = 0.0;
+
+	if(!this->bindings.size())
+		return ColorRGB(0.8,0.8,0.8);
+
+	for(auto& binding : this->bindings) {
+		div = binding->errDistance / binding->restDistance;
+		if(div >= 0.0) err += div;
+	}
+	err *= 2.0;
+
+	return (err > 0.0)
+		? ColorRGB(
+			std::min(1.0,err),
+			std::max(0.0,0.5-err),
+			std::max(0.0,1.0-err)
+		)
+		: ColorRGB(0.0,0.5,1.0);
 }

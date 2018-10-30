@@ -11,6 +11,7 @@ include $(CLOTH_PATH)src/DataStructures/Scene/Scene.mk
 include $(CLOTH_PATH)src/DataStructures/Triangle/Triangle.mk
 include $(CLOTH_PATH)src/Input/Input.mk
 include $(CLOTH_PATH)src/Physics/Physics.mk
+include $(CLOTH_PATH)src/Graphics/Color/Color.mk
 
 CLOTH_OBJDIR := $(CLOTH_PATH).ObjectFiles/
 ClothObjectDirectory: \
@@ -19,7 +20,8 @@ ClothObjectDirectory: \
 	SceneObjectDirectory \
 	TriangleObjectDirectory \
 	InputObjectDirectory \
-	PhysicsObjectDirectory
+	PhysicsObjectDirectory \
+	ColorObjectDirectory
 	mkdir -p $(CLOTH_OBJDIR)
 	mkdir -p $(CLOTH_OBJDIR)src/
 	@echo "- - - - Cloth ObjectFile directory created - - - -"
@@ -40,7 +42,8 @@ $(CLOTH_MAIN_OBJ): \
 	$(SCENE_MAIN_OBJ) \
 	$(TRIANGLE_MAIN_OBJ) \
 	$(INPUT_MAIN_OBJ) \
-	$(PHYSICS_MAIN_OBJ)
+	$(PHYSICS_MAIN_OBJ) \
+	$(COLOR_MAIN_OBJ)
 	@echo "- - - - Cloth compiled - - - -"
 	$(LD) -r $(CLOTH_LFLAGS) $^ -o $@
 	@echo "- - - - Cloth linked - - - -"
@@ -56,5 +59,6 @@ ClothClean: \
 	SceneClean \
 	TriangleClean \
 	InputClean \
-	PhysicsClean
+	PhysicsClean \
+	ColorClean
 	rm -f $(CLOTH_SUB_OBJS) $(CLOTH_MAIN_OBJ)
