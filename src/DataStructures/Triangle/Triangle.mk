@@ -14,14 +14,7 @@ _TRIANGLE_DEPS := \
 	../../Graphics/Color/Color.hpp
 TRIANGLE_DEPS := $(foreach OBJ,$(_TRIANGLE_DEPS),$(TRIANGLE_PATH)$(OBJ))
 
-_TRIANGLE_SUB_OBJS := \
-	Calculation.o \
-	Constructors.o \
-	Displayables.o \
-	Getters.o \
-	OperatorOverloads.o \
-	Plane.o \
-	Private.o
+_TRIANGLE_SUB_OBJS := Triangle.o Plane.o
 TRIANGLE_SUB_OBJS := \
 	$(foreach OBJ,$(_TRIANGLE_SUB_OBJS),$(TRIANGLE_OBJDIR)$(OBJ))
 
