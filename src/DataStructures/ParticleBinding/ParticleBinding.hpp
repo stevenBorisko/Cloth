@@ -14,6 +14,8 @@
 
 struct Binding;
 
+struct ParticleSmall;
+
 struct Particle {
 
 	bool fixed;
@@ -111,6 +113,20 @@ private:
 
 	pthread_mutex_t* lock;
 
+};
+
+struct ParticleSmall {
+	Vector4 position, velocity;
+	ParticleSmall(): position(Vector4()), velocity(Vector4()) { }
+	ParticleSmall(const ParticleSmall& other):
+		position(other.position), velocity(other.velocity)
+	{ }
+	ParticleSmall(const Particle& particle):
+		position(particle.position), velocity(particle.velocity)
+	{ }
+	ParticleSmall(const Particle* particle):
+		ParticleSmall(*particle)
+	{ }
 };
 
 #endif

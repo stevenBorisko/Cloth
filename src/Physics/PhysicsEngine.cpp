@@ -21,7 +21,7 @@ void PhysicsEngine::updateScene(Scene* scene) {
 	std::vector<Collision> collisions;
 
 	for(i = 0;i < THREAD_COUNT;++i)
-		tds[i] = { scene, i, new std::vector<Collision> };
+		tds[i] = { scene, i, std::vector<Collision>() };
 
 	// reset the particles' forces
 	for(auto& particle : scene->particles)
@@ -40,17 +40,15 @@ void PhysicsEngine::updateScene(Scene* scene) {
 
 		// detect collisions
 	t_execute(t_collisionDetect,tds);
+
 		// reduce collision data
 	for(i = 0;i < THREAD_COUNT;++i) {
-		std::vector<Collision>* tCollisions =
-			(std::vector<Collision>*)(tds[i].data);
-		if(tCollisions->size())
+		if(tds[i].collisions.size())
 			collisions.insert(
 				collisions.end(),
-				tCollisions->begin(),
-				tCollisions->end()
+				tds[i].collisions.begin(),
+				tds[i].collisions.end()
 			);
-		delete tCollisions;
 	}
 		// handle collisions
 	for(auto& collision : collisions) {
@@ -92,14 +90,13 @@ void* t_forces(void* t_data) {
 
 void* t_collisionDetect(void* t_data) {
 	ThreadData* tData = (ThreadData*)t_data;
-	std::vector<Collision>* collisions = (std::vector<Collision>*)(tData->data);
 
 	std::vector<Collision> cSS, cSM;
 	cSS = collisionSphereSphere(tData->scene, tData->index);
 	cSM = collisionSphereMesh(tData->scene, tData->index);
 
-	collisions->insert(collisions->end(), cSS.begin(), cSS.end());
-	collisions->insert(collisions->end(), cSM.begin(), cSM.end());
+	tData->collisions.insert(tData->collisions.end(), cSS.begin(), cSS.end());
+	tData->collisions.insert(tData->collisions.end(), cSM.begin(), cSM.end());
 
 	pthread_exit(NULL);
 }

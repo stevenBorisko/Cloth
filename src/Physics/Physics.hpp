@@ -8,18 +8,6 @@
 #include "../DataStructures/Scene/Scene.hpp"
 
 //----------------------------------------------------------------------------//
-// --- Threads --- //
-//----------------------------------------------------------------------------//
-
-struct ThreadData {
-	Scene* scene;
-	unsigned int index;
-	void* data;
-};
-
-void t_execute(void* (*t_func)(void*), ThreadData tds[THREAD_COUNT]);
-
-//----------------------------------------------------------------------------//
 // --- Struct Definitions --- //
 //----------------------------------------------------------------------------//
 
@@ -27,7 +15,21 @@ void t_execute(void* (*t_func)(void*), ThreadData tds[THREAD_COUNT]);
 struct Collision {
 	long unsigned int collider, particle, triangle;
 	double intersection;
+	// this can only be false if collider has size
+	bool future;
 };
+
+//----------------------------------------------------------------------------//
+// --- Threads --- //
+//----------------------------------------------------------------------------//
+
+struct ThreadData {
+	Scene* scene;
+	unsigned int index;
+	std::vector<Collision> collisions;
+};
+
+void t_execute(void* (*t_func)(void*), ThreadData tds[THREAD_COUNT]);
 
 //----------------------------------------------------------------------------//
 // --- Forces --- //

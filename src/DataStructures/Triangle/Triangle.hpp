@@ -35,7 +35,8 @@ struct Triangle {
 	// assumes point is on the plane of the triangle
 	// calls `orient`
 	bool containsPoint(const Vector4& point);
-	double intersection(const Particle* particle) const;
+	double intersection(const Vector4& position, const Vector4& velocity) const;
+	double toCenterOf(const Particle* particle) const;
 
 	// Getters
 	bool hasBuddy(const Particle* particle) const;

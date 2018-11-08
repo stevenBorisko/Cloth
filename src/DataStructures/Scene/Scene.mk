@@ -15,7 +15,8 @@ _SCENE_DEPS := \
 SCENE_DEPS := $(foreach OBJ,$(_SCENE_DEPS),$(SCENE_PATH)$(OBJ))
 
 _SCENE_SUB_OBJS := \
-	Scene.o
+	Scene.o \
+	SceneSwap.o
 SCENE_SUB_OBJS := \
 	$(foreach OBJ,$(_SCENE_SUB_OBJS),$(SCENE_OBJDIR)$(OBJ))
 

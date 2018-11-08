@@ -8,10 +8,24 @@
 #define TIME_STEP ((double)1.0 / (double)TICKS_PER_SECOND)
 
 // Visibility Macros
-#define PARTICLES_VISIBLE 0x1
-#define PARTICLES_SIZE_VISIBLE 0x2
-#define BINDINGS_VISIBLE 0x4
-#define TRIANGLES_VISIBLE 0x8
+#define PARTICLES_VISIBLE (1<<0)
+#define PARTICLES_SIZE_VISIBLE (1<<1)
+#define BINDINGS_VISIBLE (1<<2)
+#define TRIANGLES_VISIBLE (1<<3)
+
+struct Scene;
+
+struct SceneSwap {
+	std::vector<ParticleSmall> particles;
+
+	SceneSwap();
+	SceneSwap(const SceneSwap& other);
+	SceneSwap(const Scene& scene);
+	~SceneSwap();
+
+	SceneSwap& operator=(const SceneSwap& rhs);
+	SceneSwap& operator=(const Scene& rhs);
+};
 
 struct Scene {
 
@@ -22,6 +36,8 @@ struct Scene {
 	double globalGravity;
 	char visibility;
 	unsigned long long tick;
+
+	SceneSwap swap;
 
 	// Constructors
 	Scene();
@@ -40,8 +56,11 @@ struct Scene {
 	Scene& operator=(const Scene& rhs);
 
 	// Displayable Functions
-	void setup();
 	void update();
+	// backs up all particle positions to `swap`
+	void backup();
+	// reverts to the data in `swap`
+	void reset();
 	void draw();
 	void setVisibility(char _visibility);
 

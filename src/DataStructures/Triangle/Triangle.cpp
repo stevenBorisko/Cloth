@@ -105,7 +105,14 @@ bool Triangle::containsPoint(const Vector4& point) {
 	return ((dots[0] > 0.0) & (dots[1] > 0.0));
 }
 
-double Triangle::intersection(const Particle* particle) const {
+double Triangle::intersection(
+	const Vector4& position,
+	const Vector4& velocity
+) const {
+	return this->plane->intersection(position,velocity);
+}
+
+double Triangle::toCenterOf(const Particle* particle) const {
 	return std::abs(
 		this->plane->intersection(
 			particle->position,

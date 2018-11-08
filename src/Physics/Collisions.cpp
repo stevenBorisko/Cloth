@@ -6,7 +6,7 @@
 // --- Detection Implementation --- //
 //----------------------------------------------------------------------------//
 
-std::vector<Collision> collisionSphereSphere(Scene* scene, unsigned int tIndex) {
+std::vector<Collision> collisionSphereSphere(Scene* scene, unsigned int tIndex){
 
 	// variable delcaration
 	Vector4 displacementVector, notMasses, forceAB;
@@ -92,7 +92,8 @@ std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex) {
 			// particle is a part of the triangle
 			if(triangle->hasBuddy(particle)) continue;
 
-			intersection = triangle->intersection(particle);
+			intersection = triangle->toCenterOf(particle);
+			// TODO - Get future collision with triangle->intersection
 
 			// no collision
 			if(intersection >= particle->radius) continue;
@@ -109,7 +110,7 @@ std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex) {
 //----------------------------------------------------------------------------//
 
 void collisionSphereSphere(Scene* scene, const Collision& collision) {
-	
+		
 }
 
 void collisionSphereMesh(Scene* scene, const Collision& collision) {

@@ -10,7 +10,8 @@ Scene::Scene() :
 	triangles(std::vector<Triangle*>()),
 	globalGravity(0.0),
 	visibility(0),
-	tick(0)
+	tick(0),
+	swap(SceneSwap())
 { }
 
 Scene::Scene(const Scene& other):
@@ -65,6 +66,18 @@ void Scene::update() {
 	for (auto& triangle : this->triangles)
 		triangle->update();
 	PhysicsEngine::updateScene(this);
+}
+
+void Scene::backup() {
+	this->swap = *this;
+}
+
+void Scene::reset() {
+	unsigned int i = 0;
+	for(const auto& particle : this->swap.particles) {
+		this->particles[i]->velocity = particle.velocity;
+		this->particles[i++]->position = particle.position;
+	}
 }
 
 void Scene::draw() {
