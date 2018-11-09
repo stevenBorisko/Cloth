@@ -2,5 +2,5 @@
 	path = lib/Matrix4
 	url = https://github.com/stevenBorisko/Matrix4.git
 [submodule "Color"]
-	path = src/Graphics/Color
+	path = lib/Color
 	url = https://github.com/stevenBorisko/Color.git
