@@ -4,6 +4,13 @@ Simple cloth mesh simulator using springs. This is a work in progress,
 The drawing of each object uses OpenGL. If you want to change that,
 	that will be in each Displayable's `draw` function
 
+- - - - Git Commands - - - -
+
+Cloning:
+	`git clone --recurse-submodules https://github.com/stevenBorisko/Cloth.git`
+Pulling:
+	`git pull --recurse-submodules`
+
 - - - - Setup - - - -
 
 - - Using the sample driver given in SampleDriver/
