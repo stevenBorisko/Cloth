@@ -89,10 +89,15 @@ Collisions between point particles
 Adaptive time step (swap scene)
 
 - - - - Tree - - - -
-
 .
 |-- Cloth.mk
 |-- lib
+|   |-- Color
+|   |   |-- Color.cpp
+|   |   |-- Color.hpp
+|   |   |-- Color.mk
+|   |   |-- LICENSE
+|   |   `-- README
 |   `-- Matrix4
 |       |-- Matrix4.mk
 |       |-- README
@@ -120,11 +125,11 @@ Adaptive time step (swap scene)
     |   |-- Scene
     |   |   |-- Scene.cpp
     |   |   |-- Scene.hpp
-    |   |   `-- Scene.mk
+    |   |   |-- Scene.mk
+    |   |   `-- SceneSwap.cpp
     |   `-- Triangle
-    |       |-- Constructors.cpp
-    |       |-- Displayables.cpp
-    |       |-- OperatorOverloads.cpp
+    |       |-- Plane.cpp
+    |       |-- Triangle.cpp
     |       |-- Triangle.hpp
     |       `-- Triangle.mk
     |-- Input
