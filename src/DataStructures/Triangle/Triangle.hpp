@@ -7,7 +7,7 @@
 #include "../../../lib/Matrix4/src/Matrix4.hpp"
 
 #include "../ParticleBinding/ParticleBinding.hpp"
-#include "../../Graphics/Color/Color.hpp"
+#include "../../../lib/Color/Color.hpp"
 
 struct Plane;
 

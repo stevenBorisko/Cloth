@@ -11,7 +11,7 @@ TriangleObjectDirectory:
 _TRIANGLE_DEPS := \
 	Triangle.hpp \
 	../ParticleBinding/ParticleBinding.hpp \
-	../../Graphics/Color/Color.hpp
+	../../../lib/Color/Color.hpp
 TRIANGLE_DEPS := $(foreach OBJ,$(_TRIANGLE_DEPS),$(TRIANGLE_PATH)$(OBJ))
 
 _TRIANGLE_SUB_OBJS := Triangle.o Plane.o

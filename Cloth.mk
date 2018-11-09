@@ -6,12 +6,12 @@ CLOTH_CFLAGS := -std=c++11 -O3
 CLOTH_LFLAGS :=
 
 include $(CLOTH_PATH)lib/Matrix4/Matrix4.mk
+include $(CLOTH_PATH)lib/Color/Color.mk
 include $(CLOTH_PATH)src/DataStructures/ParticleBinding/ParticleBinding.mk
 include $(CLOTH_PATH)src/DataStructures/Scene/Scene.mk
 include $(CLOTH_PATH)src/DataStructures/Triangle/Triangle.mk
 include $(CLOTH_PATH)src/Input/Input.mk
 include $(CLOTH_PATH)src/Physics/Physics.mk
-include $(CLOTH_PATH)src/Graphics/Color/Color.mk
 
 CLOTH_OBJDIR := $(CLOTH_PATH).ObjectFiles/
 ClothObjectDirectory: \
