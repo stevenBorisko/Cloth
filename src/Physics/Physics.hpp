@@ -18,16 +18,14 @@ collider (long unsigned int)
 	- Always the index of a particle
 
 particle (long unsigned int)
-	- if the collision was with a particle,
-		this is the index of that particle;
-	- else
-		the size of the particle list.
+	the collision was with a particle:
+		this is the index of that particle
+	else: the size of the particle list
 
 triangle (long unsigned int)
-	- if the collision was with a mesh,
-		this is the index of the triangle within that mesh;
-	- else
-		the size of the triangle list.
+	the collision was with a mesh:
+		this is the index of the triangle within that mesh
+	else: the size of the triangle list
 
 intersection (double):
 	(0.0, 1.0]: The collision is in the future.
@@ -38,8 +36,8 @@ intersection (double):
 			then this is the distance to the edge of the sphere. If is mesh,
 			it is the distance to the triangle's plane.
 		Essentially, it is the amount the geometry is overlapping.
-		RS is radius sum. If the overlapping geometry is another sphere, there
-			is no way the intersection will be more than the sum of the radii
+		RS is radius sum. If the overlapping geometry is another sphere,
+			an intersection greater than the sum of the radii is impossible
 
 future (bool)
 	true: the collision will happen within the time step
@@ -128,6 +126,10 @@ scene (Scene*)
 tIndex (unsigned int)
 	- index of the thread executing this function
 
+return (std::vector<Collision>)
+	- The collisions detected by this thread
+	- Will be appended to another vector of collisions
+
 Detect a specific collision type. Returns a vector of all the documented
 	collisions
 */
@@ -143,6 +145,13 @@ std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex);
 /*
 --- *estFutureCollision(std::vector<Collision>&) ---
 Implementation file: Collisions/Handling.cpp
+
+collisions (std::vector<Collision>&)
+	- All collisions detected
+
+return (double)
+	(0.0, 1.0): The intersection point within the time step.
+	else: All collisions are current
 */
 double nearestFutureCollision(std::vector<Collision>& collisions);
 double farthestFutureCollision(std::vector<Collision>& collisions);
@@ -151,6 +160,14 @@ double farthestFutureCollision(std::vector<Collision>& collisions);
 --- void collision*(Scene*, const Collision&) ---
 Implementation file: Collisions/Handling.cpp
 
+scene (Scene*)
+	- The scene being analyzed
+collision (const Collision&)
+	- the collision being handled
+
+These functions will change the velocity and zero the forces on the affected
+	particles, so the Update Particle functions don't need to check for these
+	special cases.
 */
 void collisionSphereSphere(Scene* scene, const Collision& collision);
 void collisionSphereMesh(Scene* scene, const Collision& collision);
@@ -159,7 +176,18 @@ void collisionSphereMesh(Scene* scene, const Collision& collision);
 // --- Update Particle --- //
 //----------------------------------------------------------------------------//
 
+/*
+--- void update*(Scene* unsigned int tIndex) ---
+Implementation file: UpdateParticle.cpp
+
+scene (Scene*)
+	- Scene to be updated
+tIndex (unsigned int)
+	- index of the thread executing this function
+*/
+// Change velocities based on forces
 void updateVelocities(Scene* scene, unsigned int tIndex);
+// Change positions based on velocities
 void updatePositions(Scene* scene, unsigned int tIndex);
 
 #endif
