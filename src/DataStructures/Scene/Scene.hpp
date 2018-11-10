@@ -13,8 +13,13 @@
 #define BINDINGS_VISIBLE (1<<2)
 #define TRIANGLES_VISIBLE (1<<3)
 
+// Implementation file: Scene.cpp
 struct Scene;
 
+// Implementation file: src/Physics/PhysicsEngine.cpp
+struct PhysicsEngine;
+
+// Implementation file: SceneSwap.cpp
 struct SceneSwap {
 	std::vector<ParticleSmall> particles;
 
@@ -60,7 +65,7 @@ struct Scene {
 	// backs up all particle positions to `swap`
 	void backup();
 	// reverts to the data in `swap`
-	void reset();
+	void revert();
 	void draw();
 	void setVisibility(char _visibility);
 

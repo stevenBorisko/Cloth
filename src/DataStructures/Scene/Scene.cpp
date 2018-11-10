@@ -72,7 +72,7 @@ void Scene::backup() {
 	this->swap = *this;
 }
 
-void Scene::reset() {
+void Scene::revert() {
 	unsigned int i = 0;
 	for(const auto& particle : this->swap.particles) {
 		this->particles[i]->velocity = particle.velocity;

@@ -110,7 +110,7 @@ std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex) {
 //----------------------------------------------------------------------------//
 
 void collisionSphereSphere(Scene* scene, const Collision& collision) {
-		
+	
 }
 
 void collisionSphereMesh(Scene* scene, const Collision& collision) {
