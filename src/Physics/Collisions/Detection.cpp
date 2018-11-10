@@ -1,10 +1,6 @@
-#include "Physics.hpp"
+#include "../Physics.hpp"
 
 #define COLLISION 50.0f
-
-//----------------------------------------------------------------------------//
-// --- Detection Implementation --- //
-//----------------------------------------------------------------------------//
 
 std::vector<Collision> collisionSphereSphere(Scene* scene, unsigned int tIndex){
 
@@ -103,16 +99,4 @@ std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex) {
 		}
 	}
 	return collisions;
-}
-
-//----------------------------------------------------------------------------//
-// --- Handling Implementation --- //
-//----------------------------------------------------------------------------//
-
-void collisionSphereSphere(Scene* scene, const Collision& collision) {
-	
-}
-
-void collisionSphereMesh(Scene* scene, const Collision& collision) {
-
 }

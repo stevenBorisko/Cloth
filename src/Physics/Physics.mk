@@ -6,16 +6,18 @@ PHYSICS_LFLAGS :=
 PHYSICS_OBJDIR := $(PHYSICS_PATH).ObjectFiles/
 PhysicsObjectDirectory:
 	mkdir -p $(PHYSICS_OBJDIR)
+	mkdir -p $(PHYSICS_OBJDIR)Collisions/
 	@echo "- - - - Physics ObjectFile directory created - - - -"
 
 _PHYSICS_DEPS := Physics.hpp ../DataStructures/Scene/Scene.hpp
 PHYSICS_DEPS := $(foreach OBJ,$(_PHYSICS_DEPS),$(PHYSICS_PATH)$(OBJ))
 
 _PHYSICS_SUB_OBJS := \
-	Collisions.o \
 	Forces.o \
 	PhysicsEngine.o \
-	UpdateParticle.o
+	UpdateParticle.o \
+	Collisions/Detection.o \
+	Collisions/Handling.o
 PHYSICS_SUB_OBJS := \
 	$(foreach OBJ,$(_PHYSICS_SUB_OBJS),$(PHYSICS_OBJDIR)$(OBJ))
 

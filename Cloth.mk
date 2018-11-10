@@ -23,7 +23,6 @@ ClothObjectDirectory: \
 	PhysicsObjectDirectory \
 	ColorObjectDirectory
 	mkdir -p $(CLOTH_OBJDIR)
-	mkdir -p $(CLOTH_OBJDIR)src/
 	@echo "- - - - Cloth ObjectFile directory created - - - -"
 
 _CLOTH_DEPS :=

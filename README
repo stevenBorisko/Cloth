@@ -2,7 +2,7 @@ Simple cloth mesh simulator using springs. This is a work in progress,
 	so there are, inevitably, many things wrong
 
 The drawing of each object uses OpenGL. If you want to change that,
-	that will be in each Displayable's `draw` function
+	that will be in each DataStructure's `draw` function
 
 - - - - Git Commands - - - -
 
@@ -144,11 +144,12 @@ Adaptive time step (swap scene)
     |   |-- Grid.cpp
     |   |-- Input.hpp
     |   `-- Input.mk
-    |-- Physics
-    |   |-- Collisions.cpp
-    |   |-- Forces.cpp
-    |   |-- PhysicsEngine.cpp
-    |   |-- Physics.hpp
-    |   |-- Physics.mk
-    |   `-- UpdateParticle.cpp
-    `-- test.txt
+    `-- Physics
+        |-- Collisions
+        |   |-- Detection.cpp
+        |   `-- Handling.cpp
+        |-- Forces.cpp
+        |-- PhysicsEngine.cpp
+        |-- Physics.hpp
+        |-- Physics.mk
+        `-- UpdateParticle.cpp

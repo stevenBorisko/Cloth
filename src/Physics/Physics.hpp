@@ -12,18 +12,23 @@
 //----------------------------------------------------------------------------//
 
 /*
+--- struct Collision ---
+
 collider (long unsigned int)
 	- Always the index of a particle
+
 particle (long unsigned int)
 	- if the collision was with a particle,
 		this is the index of that particle;
 	- else
 		the size of the particle list.
+
 triangle (long unsigned int)
 	- if the collision was with a mesh,
 		this is the index of the triangle within that mesh;
 	- else
 		the size of the triangle list.
+
 intersection (double):
 	(0.0, 1.0]: The collision is in the future.
 		This is how far into the time step it occurs.
@@ -35,6 +40,7 @@ intersection (double):
 		Essentially, it is the amount the geometry is overlapping.
 		RS is radius sum. If the overlapping geometry is another sphere, there
 			is no way the intersection will be more than the sum of the radii
+
 future (bool)
 	true: the collision will happen within the time step
 	false: the collision is happening now
@@ -57,12 +63,16 @@ struct Collision {
 //----------------------------------------------------------------------------//
 
 /*
+--- struct ThreadData ---
+
 scene (Scene*)
 	- The scene being analyzed
 index (unsigned int)
 	- The index of the thread
 collisions (std::vector<Collision>)
 	- All the collisions detected within the scene so far
+
+Data structure to be sent to a POSIX thread function
 */
 struct ThreadData {
 	Scene* scene;
@@ -70,28 +80,78 @@ struct ThreadData {
 	std::vector<Collision> collisions;
 };
 
+/*
+--- void t_execute(void* (*)(void*), ThreadData[THREAD_COUNT]) ---
+Implementation file: PhysicsEngine.cpp
+
+t_func (void* (*)(void*)
+	- POSIX thread compliant function
+	- The argument that it expects must be a ThreadData struct
+	- Each function will get one of the structs in `tds`
+tds (ThreadData[THREAD_COUNT])
+	- Data to be sent along with each thread
+Creates and joins `THREAD_COUNT` threads each calling a POSIX thread compliant
+	function with its own data structure
+*/
 void t_execute(void* (*t_func)(void*), ThreadData tds[THREAD_COUNT]);
 
 //----------------------------------------------------------------------------//
 // --- Forces --- //
 //----------------------------------------------------------------------------//
 
+/*
+--- void force*(Scene*, unsigned int) ---
+Implementation file: Forces.cpp
+
+scene (Scene*)
+	- Scene being analyzed
+tIndex (unsigned int)
+	- index of the thread executing this function
+
+Calculate a specific force on all the particles in the scene.
+*/
+// Force of gravity specified in `scene` as `globalGravity`
 void forceGravity(Scene* scene, unsigned int tIndex);
+// Force of the spring binding between each particle
 void forceBinding(Scene* scene, unsigned int tIndex);
 
 //----------------------------------------------------------------------------//
 // --- Collision Detection --- //
 //----------------------------------------------------------------------------//
 
-// Particles of radius > 0.0 and particles of radius > 0.0
+/*
+--- std::vector<Collision> collision*(Scene* unsigned int) ---
+Implementation file: Collisions/Detection.cpp
+
+scene (Scene*)
+	- Scene being analyzed
+tIndex (unsigned int)
+	- index of the thread executing this function
+
+Detect a specific collision type. Returns a vector of all the documented
+	collisions
+*/
+// (Particles of radius > 0.0) and (particles of radius > 0.0)
 std::vector<Collision> collisionSphereSphere(Scene* scene, unsigned int tIndex);
-// Particles of radius > 0.0 and triangulated mesh
+// (Particles of radius > 0.0) and (triangulated mesh)
 std::vector<Collision> collisionSphereMesh(Scene* scene, unsigned int tIndex);
 
 //----------------------------------------------------------------------------//
 // --- Collision Handling --- //
 //----------------------------------------------------------------------------//
 
+/*
+--- *estFutureCollision(std::vector<Collision>&) ---
+Implementation file: Collisions/Handling.cpp
+*/
+double nearestFutureCollision(std::vector<Collision>& collisions);
+double farthestFutureCollision(std::vector<Collision>& collisions);
+
+/*
+--- void collision*(Scene*, const Collision&) ---
+Implementation file: Collisions/Handling.cpp
+
+*/
 void collisionSphereSphere(Scene* scene, const Collision& collision);
 void collisionSphereMesh(Scene* scene, const Collision& collision);
 
